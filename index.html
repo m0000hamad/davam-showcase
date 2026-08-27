@@ -449,8 +449,12 @@ body > div[lang]:not(.on){display:none}
         <tr><td>اینترنت سرور</td><td>لازم</td><td>برای دریافت بسته و کتابخانه‌ها</td></tr>
       </tbody>
     </table></div>
-    <div class="note"><b>توکن دسترسی:</b> کد سامانه خصوصی است، پس نصب به یک
-      توکن فقط‌خواندنی نیاز دارد. توکن را از تیم دوام بگیرید.</div>
+    <div class="note"><b>🔑 توکن دسترسی:</b> مخزن نسخه‌ها خصوصی است، پس نصب
+      به یک توکن فقط‌خواندنی نیاز دارد و <b>برای هر نصب توکن جداگانه صادر
+      می‌شود</b> تا بتوان تکی باطلش کرد. توکن روی سرور در
+      <code dir="ltr">/etc/davam/token</code> با دسترسی <code>600</code> و
+      مالکیت <code>root</code> می‌نشیند — نه در <code dir="ltr">.env</code>،
+      چون آن فایل را کانتینر برنامه هم می‌خواند.</div>
   </div></section>
 
   <section id="fa-install"><div class="wrap">
@@ -794,8 +798,12 @@ bash davam.sh changes 6.30.0</pre></div>
         <tr><td>Internet</td><td>Required</td><td>To fetch the package and libraries</td></tr>
       </tbody>
     </table></div>
-    <div class="note"><b>Access token:</b> the source is private, so
-      installation needs a read-only token. Request one from the Davam team.</div>
+    <div class="note"><b>🔑 Access token:</b> the release repository is
+      private, so installation needs a read-only token, and <b>a separate
+      token is issued per installation</b> so any one can be revoked on its
+      own. On the server it lives at <code dir="ltr">/etc/davam/token</code>
+      with mode <code>600</code> owned by <code>root</code> — not in
+      <code dir="ltr">.env</code>, which the application container also reads.</div>
   </div></section>
 
   <section><div class="wrap">

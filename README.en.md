@@ -251,8 +251,15 @@ and a standalone desktop build is available.
 | Network | Port 8080 open (or your chosen port) | Ports 80 and 443 for HTTPS |
 | Internet | Required on the server | To fetch the package, images and libraries |
 
-**Access token**: because the source is private, installation requires a
-read-only token. Request one from the Davam team.
+**Access token**: because the release repository is private, installation
+requires a read-only token. **A separate token is issued per installation**,
+so any one of them can be revoked without disrupting the others. Request one
+from the Davam team.
+
+On the server the token lives at `/etc/davam/token` with mode `600` owned by
+`root` — not in `.env`. The reason is that `.env` is also read by the
+application container, and the repository token should not be reachable by a
+process that answers requests from the network.
 
 ---
 
