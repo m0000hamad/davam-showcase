@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>دوام — سامانه‌ی نگهداری و تعمیرات دکل‌های حفاری</title>
-<meta name="description" content="دوام — سامانه‌ی یکپارچه‌ی CMMS/PMS نگهداری و تعمیرات دکل‌های حفاری. Davam — integrated maintenance management system for drilling rigs.">
+<title>دوام — سامانه‌ی نگهداری و تعمیرات صنعتی</title>
+<meta name="description" content="دوام — سامانه‌ی یکپارچه‌ی CMMS/PMS نگهداری و تعمیرات صنعتی برای کارخانه، نیروگاه، ناوگان و دکل حفاری. Davam — integrated industrial maintenance management system.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -232,10 +232,11 @@ body > div[lang]:not(.on){display:none}
 
   <div class="wrap hero">
     <h1>دوام</h1>
-    <p class="sub">سامانه‌ی یکپارچه‌ی نگهداری و تعمیرات دکل‌های حفاری —
-      جایگزین بومیِ یک سامانه‌ی ERP خارجی، در بهره‌برداری روی سه دکل.</p>
+    <p class="sub">سامانه‌ی یکپارچه‌ی نگهداری و تعمیرات صنعتی — برای
+      کارخانه، نیروگاه، ناوگان و دکل حفاری. آبدیده در سخت‌ترین محیط ممکن،
+      جایگزین بومیِ یک سامانه‌ی ERP خارجی.</p>
     <div class="pills">
-      <span class="pill">v6.33.0</span>
+      <span class="pill">v6.35.0</span>
       <span class="pill grey">FastAPI</span>
       <span class="pill grey">PostgreSQL 16</span>
       <span class="pill grey">React 18</span>
@@ -243,18 +244,23 @@ body > div[lang]:not(.on){display:none}
       <span class="pill grey">فارسی · English</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>۱۲۱</b><span>نسخه‌ی منتشرشده</span></div>
+      <div class="stat"><b>۱۲۳</b><span>نسخه‌ی منتشرشده</span></div>
       <div class="stat"><b>۳۷</b><span>ماژول بک‌اند</span></div>
       <div class="stat"><b>۳۱</b><span>صفحه‌ی کاربری</span></div>
-      <div class="stat"><b>۳</b><span>دکل در بهره‌برداری</span></div>
+      <div class="stat"><b>۳</b><span>مجموعه در بهره‌برداری</span></div>
     </div>
   </div>
 
   <section id="fa-what"><div class="wrap">
     <h2>دوام چیست</h2>
-    <p class="lede">یک سامانه‌ی CMMS/PMS تحت وب که کل چرخه‌ی نگهداری و تعمیرات
-      یک شرکت حفاری را می‌گرداند — از برنامه‌ی PM و دستور کار تا نامه‌نگاری
-      اداری، انبار، تدارکات و امور کارکنان.</p>
+    <p class="lede">یک سامانه‌ی CMMS/PMS تحت وب برای هر سازمانی که دارایی
+      فیزیکی دارد و باید نگهش دارد. منطقش به صنعت خاصی گره نخورده —
+      تجهیز، برنامه‌ی نگهداری، دستور کار، خرابی و شاخص در هر صنعت
+      دارایی‌محور یکسان‌اند.</p>
+    <div class="note"><b>یک نکته‌ی صادقانه:</b> نسخه‌ی فعلی واژگان صنعت
+      حفاری را دارد — واحد تفکیک دارایی‌ها «دکل» نامیده می‌شود. برای
+      استقرار در صنعتی دیگر این برچسب متناسب با همان صنعت («کارخانه»،
+      «سایت»، «خط») تنظیم می‌شود؛ ساختار و منطق زیرین تغییری نمی‌کند.</div>
     <div class="grid">
       <div class="card accent-a">
         <h3><span class="ic">🌳</span> شناسنامه‌ی دقیق ناوگان</h3>
@@ -573,10 +579,11 @@ bash davam.sh changes 6.30.0</pre></div>
 
   <div class="wrap hero">
     <h1>Davam</h1>
-    <p class="sub">An integrated maintenance management system for drilling
-      rigs — replacing a foreign ERP system, in production across three rigs.</p>
+    <p class="sub">An integrated industrial maintenance management system —
+      for factories, power plants, fleets and drilling rigs. Hardened in an
+      unforgiving environment, replacing a foreign ERP system.</p>
     <div class="pills">
-      <span class="pill">v6.33.0</span>
+      <span class="pill">v6.35.0</span>
       <span class="pill grey">FastAPI</span>
       <span class="pill grey">PostgreSQL 16</span>
       <span class="pill grey">React 18</span>
@@ -584,18 +591,24 @@ bash davam.sh changes 6.30.0</pre></div>
       <span class="pill grey">فارسی · English</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>121</b><span>releases shipped</span></div>
+      <div class="stat"><b>123</b><span>releases shipped</span></div>
       <div class="stat"><b>37</b><span>backend modules</span></div>
       <div class="stat"><b>31</b><span>application screens</span></div>
-      <div class="stat"><b>3</b><span>rigs in production</span></div>
+      <div class="stat"><b>3</b><span>sites in production</span></div>
     </div>
   </div>
 
   <section><div class="wrap">
     <h2>What Davam is</h2>
-    <p class="lede">A web-based CMMS/PMS that runs the entire maintenance
-      cycle of a drilling contractor — from PM schedules and work orders to
-      official correspondence, warehouse, procurement and HR.</p>
+    <p class="lede">A web-based CMMS/PMS for any organisation that owns
+      physical assets and has to keep them running. Nothing in its logic is
+      tied to one industry — asset, maintenance plan, work order, failure and
+      indicator mean the same thing wherever maintenance is done.</p>
+    <div class="note"><b>One honest note:</b> the current build carries
+      drilling vocabulary — the unit that separates assets is called a
+      <i>rig</i>. Deploying into another industry means setting that label to
+      whatever fits (“plant”, “site”, “line”); the underlying structure and
+      logic do not change.</div>
     <div class="grid">
       <div class="card accent-a">
         <h3><span class="ic">🌳</span> A precise asset register</h3>
@@ -984,8 +997,8 @@ function setLang(l){
   document.querySelectorAll('.logo [data-fa]').forEach(e=>e.style.display = l==='fa'?'':'none');
   document.querySelectorAll('.logo [data-en]').forEach(e=>e.style.display = l==='en'?'':'none');
   document.title = l==='fa'
-    ? 'دوام — سامانه‌ی نگهداری و تعمیرات دکل‌های حفاری'
-    : 'Davam — Maintenance Management for Drilling Rigs';
+    ? 'دوام — سامانه‌ی نگهداری و تعمیرات صنعتی'
+    : 'Davam — Industrial Maintenance Management';
   try{ localStorage.setItem('davam-lang', l); }catch(e){}
 }
 

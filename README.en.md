@@ -2,11 +2,11 @@
 
 # Davam
 
-**Integrated Maintenance Management System for Drilling Rigs**
+**Integrated Industrial Maintenance Management System**
 
 [فارسی](README.md) · English · [Landing page](https://m0000hamad.github.io/davam-showcase/)
 
-![version](https://img.shields.io/badge/version-6.33.0-4668E2)
+![version](https://img.shields.io/badge/version-6.35.0-4668E2)
 ![stack](https://img.shields.io/badge/FastAPI%20·%20PostgreSQL%2016%20·%20React%2018-informational)
 ![deploy](https://img.shields.io/badge/Docker%20or%20bare--metal-2496ED)
 ![i18n](https://img.shields.io/badge/فارسی%20·%20English-00B0B1)
@@ -18,14 +18,27 @@
 
 ## What Davam is
 
-Davam is a web-based **CMMS/PMS** built to run maintenance operations for
-drilling rigs. It replaces a foreign ERP system at an active drilling
-contractor.
+Davam is a web-based **CMMS/PMS** for any organisation that owns physical
+assets and has to keep them running — a factory, a production line, a power
+plant, a fleet, a refinery or a drilling rig.
 
-The system runs in production across three rigs and has grown over
-**121 released versions** from a single login module into a full enterprise
-platform — equipment hierarchy and work orders, official correspondence,
-warehouse, procurement, HR workflows and management reporting.
+Nothing in its logic is tied to one industry: **asset, maintenance plan,
+work order, failure, part and indicator** mean the same thing wherever
+maintenance is done. What sets Davam apart is that it implements those
+concepts with real discipline rather than as empty forms.
+
+The system was **hardened in an unforgiving environment** — drilling, where
+equipment downtime converts directly into daily cost. It runs in production
+across three sites today and has grown over **123 released versions** from a
+single login module into a full enterprise platform: equipment hierarchy and
+work orders, official correspondence, warehouse, procurement, HR workflows
+and management reporting. It replaced a foreign ERP system and does the same
+job on the Jalali calendar and in Persian.
+
+> **One honest note:** the current build carries drilling vocabulary — the
+> unit that separates assets is called a *rig*. Deploying into another
+> industry means setting that label to whatever fits ("plant", "site",
+> "line"); the underlying structure and logic do not change.
 
 > The source code is **private**. This page exists for the product overview
 > and installation documentation only.
