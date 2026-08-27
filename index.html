@@ -88,7 +88,7 @@ header{
   background:var(--brand-soft);color:var(--brand);border:1px solid transparent}
 .pill.grey{background:var(--surface-2);color:var(--muted);border-color:var(--line)}
 
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(140px,100%),1fr));
   gap:14px;margin-top:44px}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;
   padding:20px 16px;box-shadow:var(--shadow)}
@@ -100,7 +100,7 @@ section{padding:56px 0;border-top:1px solid var(--line)}
 h2{font-size:clamp(1.4rem,3.4vw,1.9rem);font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
 .lede{color:var(--muted);margin-bottom:28px;max-width:660px}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(268px,100%),1fr));gap:16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;
   padding:22px;box-shadow:var(--shadow)}
 .card h3{font-size:1rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:9px}
@@ -153,7 +153,7 @@ tbody tr:last-child td{border-bottom:0}
 .note b{color:var(--brand)}
 
 /* ── نماها ──────────────────────────────────────────── */
-.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
 .shot{background:var(--surface);border:1px solid var(--line);border-radius:14px;
   overflow:hidden;box-shadow:var(--shadow)}
 .shot img{display:block;width:100%;height:auto}
@@ -267,6 +267,48 @@ body > div[lang]:not(.on){display:none}
         <h3><span class="ic">🔐</span> دسترسی و امنیت</h3>
         <p>ورود با JWT و bcrypt، دسترسی نقش‌محور، و جداسازی داده بر اساس
           دکل — هر کاربر فقط داده‌ی دکل خودش را می‌بیند.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="fa-day"><div class="wrap">
+    <h2>یک روز کاری در دوام</h2>
+    <p class="lede">بهترین توضیح دوام، دنبال‌کردن یک روز واقعی است.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>شب قبل — سامانه کار فردا را می‌سازد</h3>
+        <p>بر اساس برنامه‌های PM و تقویم شمسی، دستور کارهای فردا خودکار
+          ساخته می‌شوند. کسی لازم نیست چیزی را دستی باز کند.</p>
+      </div>
+      <div class="step">
+        <h3>صبح — هر کس فقط کار خودش را می‌بیند</h3>
+        <p>تکنسین «کارتابل من» را باز می‌کند و فقط کارهای خودش و دکل خودش
+          را می‌بیند. چک‌لیست همان‌جا باز می‌شود و هر آیتم یکی از این
+          حالت‌ها را می‌گیرد: انجام شد، نیازی نبود، انجام نشد، نیاز به
+          کالا، ارجاع به مدیریت.</p>
+      </div>
+      <div class="step">
+        <h3>وقتی کاری عقب می‌افتد</h3>
+        <p>سامانه اجازه‌ی بستن کار عقب‌افتاده را <b>بدون دلیل تأخیر</b>
+          نمی‌دهد. این تنها چیزی است که گزارش تأخیر را واقعی نگه می‌دارد و
+          نمی‌گذارد همه‌چیز سبز شود.</p>
+      </div>
+      <div class="step">
+        <h3>وقتی تجهیزی خراب می‌شود</h3>
+        <p>خرابی با زمان شروع و پایان ثبت می‌شود؛ <b>مدت توقف</b> خودکار
+          حساب می‌شود و قطعات مصرفی، شرح رفع و اقدام پیشگیرانه نگه داشته
+          می‌شوند. همین‌ها بعداً MTBF و MTTR را می‌سازند.</p>
+      </div>
+      <div class="step">
+        <h3>آخر روز — گزارش از خودِ کارها ساخته می‌شود</h3>
+        <p>گزارش روزانه به تفکیک دپارتمان تولید می‌شود و <b>در لحظه‌ی ثبت
+          قفل می‌شود</b>؛ با تغییر بعدی کارها عوض نمی‌شود، چون یک گزارش
+          امضاشده نباید بازنویسی شود.</p>
+      </div>
+      <div class="step">
+        <h3>آخر ماه — تحویل</h3>
+        <p>گزارش‌ها در پوشه‌های سال و ماه شمسی بایگانی می‌شوند و یک‌جا
+          به‌صورت ZIP یا اکسل قابل تحویل‌اند.</p>
       </div>
     </div>
   </div></section>
@@ -503,6 +545,49 @@ bash davam.sh changes 6.30.0</pre></div>
     </div>
   </div></section>
 
+  <section><div class="wrap">
+    <h2>A working day in Davam</h2>
+    <p class="lede">The clearest explanation of Davam is to follow one real day.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>The night before — the system builds tomorrow's work</h3>
+        <p>Work orders are generated automatically from the PM schedules
+          against the Jalali calendar. Nobody opens anything by hand.</p>
+      </div>
+      <div class="step">
+        <h3>Morning — everyone sees only their own work</h3>
+        <p>A technician opens “My desk” and sees only their own tasks, on
+          their own rig. The checklist opens inline, and every item takes one
+          of: done, not required, not done, needs parts, escalated to
+          management.</p>
+      </div>
+      <div class="step">
+        <h3>When work slips</h3>
+        <p>Overdue work cannot be closed <b>without a delay reason</b>. That
+          is the only thing keeping the overdue report honest instead of
+          letting everything turn green.</p>
+      </div>
+      <div class="step">
+        <h3>When equipment fails</h3>
+        <p>The failure is logged with start and end time; <b>downtime</b> is
+          computed automatically, and the parts consumed, the fix and the
+          preventive action are kept. Those are what later produce MTBF and
+          MTTR.</p>
+      </div>
+      <div class="step">
+        <h3>End of day — the report builds itself from the work</h3>
+        <p>The daily report is produced per department and <b>frozen the
+          moment it is filed</b>; it does not change when tasks change
+          afterwards, because a signed report must not rewrite itself.</p>
+      </div>
+      <div class="step">
+        <h3>Month end — handover</h3>
+        <p>Reports are archived into Jalali year and month folders and can be
+          handed over as a single ZIP or Excel file.</p>
+      </div>
+    </div>
+  </div></section>
+
   <section data-shots><div class="wrap">
     <h2>Screens</h2>
     <p class="lede">Captured from the running application.</p>
@@ -656,18 +741,59 @@ bash davam.sh changes 6.30.0</pre></div>
 </div>
 
 <script>
-// ── تصاویر: از این آرایه پر می‌شود. خالی باشد، بخش «نماها» پنهان می‌ماند.
+// ── تصاویر ─────────────────────────────────────────────────────────────
+// فایل‌هایی که هنوز آپلود نشده‌اند، خودشان از صفحه حذف می‌شوند (onerror) و
+// اگر هیچ‌کدام لود نشوند کل بخش پنهان می‌ماند — پس صفحه هیچ‌وقت عکس شکسته
+// نشان نمی‌دهد.
 const SHOTS = [
-  // { src:'assets/screenshots/dashboard.png', fa:'داشبورد عملیاتی', en:'Operational dashboard' },
+  { src:'assets/screenshots/dashboard.png',
+    fa:'داشبورد عملیاتی — کارهای باز، عقب‌افتاده، پیشرفت هفته و وضعیت دستور کارها',
+    en:'Operational dashboard — open and overdue work, weekly progress, work-order status' },
+  { src:'assets/screenshots/equipment-tree.png',
+    fa:'درخت تجهیزات — سلسله‌مراتب تا شش سطح، با کد فنی و مدل هر آیتم',
+    en:'Equipment tree — up to six levels, with the technical code and model of each item' },
+  { src:'assets/screenshots/daily-report-generate.png',
+    fa:'ساخت گزارش روزانه از کارهای PM — به تفکیک دپارتمان، با چک‌لیست هر کار',
+    en:'Building the daily report from PM tasks — grouped by department, with each checklist' },
+  { src:'assets/screenshots/daily-reports-archive.png',
+    fa:'بایگانی گزارش‌های روزانه در پوشه‌های سال و ماه شمسی',
+    en:'Daily reports archived in Jalali year and month folders' },
+  { src:'assets/screenshots/failure-report.png',
+    fa:'گزارش خرابی — مدت توقف، قطعات مصرفی، شرح رفع و اقدام پیشگیرانه',
+    en:'Failure report — downtime, parts consumed, fix description and preventive action' },
+  { src:'assets/screenshots/kpi.png',
+    fa:'گزارش KPI — MTBF و MTTR و دسترس‌پذیری، با روند ۱۲ ماهه',
+    en:'KPI report — MTBF, MTTR and availability, with a 12-month trend' },
+  { src:'assets/screenshots/pm-tasks.png',
+    fa:'کارهای PM — کارتابل تکنسین، با خروجی اکسل و ساخت گزارش روزانه',
+    en:'PM tasks — the technician’s desk, with Excel export and daily-report generation' },
+  { src:'assets/screenshots/settings.png',
+    fa:'تنظیمات — ۲۴ تنظیم در ۸ بخش، شامل نام و لوگوی شرکت',
+    en:'Settings — 24 settings across 8 groups, including company name and logos' },
 ];
 
 function renderShots(){
   document.querySelectorAll('[data-shots]').forEach(sec=>{
+    const langEl = sec.closest('[lang]');
+    const lang = langEl ? langEl.getAttribute('lang') : 'fa';
+    const grid = sec.querySelector('[data-shots-grid]');
     if(!SHOTS.length){ sec.style.display='none'; return; }
-    const lang = sec.closest('[lang]').getAttribute('lang');
-    sec.querySelector('[data-shots-grid]').innerHTML = SHOTS.map(s=>
-      `<figure class="shot"><img src="${s.src}" alt="${s[lang]||''}" loading="lazy">
-       <figcaption>${s[lang]||''}</figcaption></figure>`).join('');
+    sec.style.display='';
+    grid.innerHTML = '';
+    let pending = SHOTS.length, ok = 0;
+    SHOTS.forEach(s=>{
+      const fig = document.createElement('figure');
+      fig.className = 'shot';
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.alt = s[lang] || '';
+      const cap = document.createElement('figcaption');
+      cap.textContent = s[lang] || '';
+      img.onload  = ()=>{ ok++; if(--pending===0 && ok===0) sec.style.display='none'; };
+      img.onerror = ()=>{ fig.remove(); if(--pending===0 && ok===0) sec.style.display='none'; };
+      img.src = s.src;
+      fig.appendChild(img); fig.appendChild(cap); grid.appendChild(fig);
+    });
   });
 }
 

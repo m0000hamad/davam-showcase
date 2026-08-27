@@ -32,42 +32,99 @@ warehouse, procurement, HR workflows and management reporting.
 
 ---
 
+## A working day in Davam
+
+The clearest explanation of Davam is to follow one real day:
+
+**The night before**, the system generates tomorrow's work orders from the
+PM schedules against the Jalali calendar. Nobody opens anything by hand.
+
+**In the morning**, each technician opens "My desk" and sees only their own
+work, on their own rig. Each task's checklist opens inline — for the daily
+electrical checklist, say: inspect the generators, check load, the
+switchboard room, VFD fans and filters, mud-pump motors. Every item takes
+one of: done, not required, not done, needs parts, escalated to management.
+
+**When work slips**, the system will not let it be closed without a
+**delay reason**. That is the only thing keeping the overdue report honest
+instead of turning everything green.
+
+**When equipment fails**, the failure is logged with start and end time; the
+system computes **downtime** itself and keeps the parts consumed, the fix
+description and the preventive action. Those are what later produce MTBF
+and MTTR.
+
+**At the end of the day**, the daily report is generated from the PM tasks
+themselves — grouped by department, with a count per status. The report is
+**frozen at the moment it is filed** and does not change when tasks change
+afterwards, because a signed report must not rewrite itself.
+
+**At month end**, reports are archived into Jalali year and month folders
+and can be handed over as a single ZIP or Excel file.
+
+---
+
 ## What it does
 
 ### Maintenance — the core
 
 | Area | Description |
 |---|---|
-| **Equipment tree** | Hierarchical asset structure per rig, importable from existing Excel files |
+| **Equipment tree** | Up to **six levels** (rig → system → equipment → sub-assembly → part), each with its technical code and model plus child counts. Importable from existing Excel files |
 | **PM schedules** | Daily / weekly / monthly plans on the **Jalali calendar**, with nightly automatic work-order generation |
-| **Work orders** | Full lifecycle: issue, execute, checklist, close — with a mandatory delay reason on overdue work |
-| **Failures & unplanned work** | Report, escalate and track to resolution |
-| **Daily reports** | Generated from PM tasks, archived per month, printable/PDF output |
+| **Work orders** | Full lifecycle with a unique number: issue, execute, inline checklist, close — with a mandatory delay reason on overdue work, and single or bulk duplication |
+| **Failure reports** | Logged with automatic downtime calculation, parts consumed, fix description and preventive action, plus a resolved-failure history |
+| **Unplanned work** | Outside the PM cycle, but inside the same reports |
+| **Daily reports** | Generated from PM tasks per department, frozen when filed, archived in Jalali year/month folders, printable and ZIP output |
+
+### Reporting and KPIs
+
+The **KPI report** gives the standard maintenance indicators: **MTBF**,
+**MTTR**, **Availability**, failure count, downtime hours and how many
+assets failed — filterable by rig, department and period up to 12 months.
+
+Fleet availability trend is drawn against colour thresholds
+(green ≥98% · amber 95–98% · red below 95%), alongside monthly charts for
+failure count and downtime hours.
+
+**Excel export** is available from every list. The PM checklist export puts
+each department on its own sheet, marks items with a tick or N/A, and
+carries the due date and the delay reason. Ranges: today, current week,
+current month, a custom range, all open work, or a full export — all on the
+Jalali calendar.
 
 ### Supply chain
 
-Inventory and stock · material requests · procurement · purchase orders ·
-petty cash · asset register — with a connector to the corporate warehouse API.
+The purchasing pipeline is shown as **stages**, so it is visible exactly
+where work is stuck: awaiting purchase, awaiting order approval, awaiting
+receipt, awaiting invoice, invoice mismatch.
 
-### Administration & HR
+Material requests · purchase orders · receipt and inspection · invoice and
+payment · suppliers · import files · stock on hand · goods in transit ·
+stock cardex · item catalogue · repairable parts · warranty · cost ledger ·
+budget · petty cash · FX rates — with a corporate warehouse API connector.
 
-Official letters with letterhead, approval routing and signatures · inbox ·
-document library · leave · travel requests · payslips · support tickets ·
-multi-step approval engine.
+### Administration and HR
 
-### Management & reporting
-
-Operational dashboard · KPIs · analytical reports and charts ·
-Excel export from every list · full audit log.
+Official letters with letterhead, horizontal approval routing and scanned
+signatures · inbox · document library · leave · travel requests · payslips ·
+support tickets · multi-step approval engine with amount-based conditions.
 
 ### Platform
 
-- **Bilingual** — Persian (RTL) and English (LTR), switchable at runtime
-- **Role-based access** — admin / manager / user, plus per-rig data isolation
-- **Nightly automatic backups** via `pg_dump`, restore from the admin panel
+- **Bilingual** — Persian (RTL) and English (LTR), switchable at runtime,
+  including printed and PDF output
+- **Role-based access** — admin / manager / user, plus **per-rig data
+  isolation**: a rig's users see only that rig's data
+- **My desk and pending decisions** — every user knows exactly what is
+  waiting on them
+- **Branding** — company name and logos set from the panel itself, applied
+  to the login screen, sidebar and letterheads (24 settings across 8 groups)
+- **Nightly automatic backups** via `pg_dump`, with restore from the panel
 - **Notifications** over Telegram, Bale and email
-- **AI assistant** for natural-language queries over the data
-- **Desktop shell** (Tauri) alongside the browser client
+- **Assistant** for asking about equipment, work orders, failures, stock and
+  letters in natural language — read-only; it never files or sends anything
+- **Desktop shell** (Tauri) alongside the browser client and PWA
 
 ---
 
