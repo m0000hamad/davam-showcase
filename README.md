@@ -31,6 +31,21 @@
 
 ---
 
+## نماهایی از سامانه
+
+| | |
+|---|---|
+| ![داشبورد مدیریتی](assets/screenshots/admin-dashboard.png) | ![درخت تجهیزات](assets/screenshots/equipment-tree.png) |
+| **داشبورد مدیریتی** — کارهای باز و عقب‌افتاده، پیشرفت PM به تفکیک دکل | **درخت تجهیزات** — سلسله‌مراتب تا شش سطح، با کد فنی و مدل هر آیتم |
+| ![گزارش KPI](assets/screenshots/kpi.png) | ![گزارش خرابی](assets/screenshots/failure-report.png) |
+| **گزارش KPI** — MTBF و MTTR و دسترس‌پذیری، با روند ۱۲ ماهه | **گزارش خرابی** — مدت توقف، قطعات مصرفی، شرح رفع و پیشگیری |
+| ![گزارش روزانه](assets/screenshots/daily-report-generate.png) | ![کارهای PM](assets/screenshots/pm-tasks.png) |
+| **ساخت گزارش روزانه** — از خودِ کارهای PM، به تفکیک دپارتمان | **کارهای PM** — کارتابل تکنسین، با خروجی اکسل |
+
+<sub>نمای بیشتر در [صفحه‌ی معرفی](https://m0000hamad.github.io/davam-showcase/).</sub>
+
+---
+
 ## یک روز کاری در دوام
 
 بهترین توضیح دوام، دنبال‌کردن یک روز واقعی است:

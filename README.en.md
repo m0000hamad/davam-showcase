@@ -32,6 +32,21 @@ warehouse, procurement, HR workflows and management reporting.
 
 ---
 
+## Screens
+
+| | |
+|---|---|
+| ![Management dashboard](assets/screenshots/admin-dashboard.png) | ![Equipment tree](assets/screenshots/equipment-tree.png) |
+| **Management dashboard** — open and overdue work, PM progress per rig | **Equipment tree** — up to six levels, with each item's code and model |
+| ![KPI report](assets/screenshots/kpi.png) | ![Failure report](assets/screenshots/failure-report.png) |
+| **KPI report** — MTBF, MTTR and availability, with a 12-month trend | **Failure report** — downtime, parts consumed, fix and prevention |
+| ![Daily report](assets/screenshots/daily-report-generate.png) | ![PM tasks](assets/screenshots/pm-tasks.png) |
+| **Building the daily report** — from the PM tasks themselves, per department | **PM tasks** — the technician's desk, with Excel export |
+
+<sub>More screens on the [landing page](https://m0000hamad.github.io/davam-showcase/).</sub>
+
+---
+
 ## A working day in Davam
 
 The clearest explanation of Davam is to follow one real day:
