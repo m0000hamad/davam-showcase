@@ -252,14 +252,14 @@ and a standalone desktop build is available.
 | Internet | Required on the server | To fetch the package, images and libraries |
 
 **Access token**: because the release repository is private, installation
-requires a read-only token. **A separate token is issued per installation**,
-so any one of them can be revoked without disrupting the others. Request one
-from the Davam team.
+requires a read-only token, supplied with the install command. It is
+unrelated to the product licence — the licence governs *use*, the token only
+permits *fetching the package*.
 
 On the server the token lives at `/etc/davam/token` with mode `600` owned by
-`root` — not in `.env`. The reason is that `.env` is also read by the
-application container, and the repository token should not be reachable by a
-process that answers requests from the network.
+`root`, not in `.env` — because `.env` is also read by the application
+container, and the token should not be reachable by a process that answers
+requests from the network.
 
 ---
 
