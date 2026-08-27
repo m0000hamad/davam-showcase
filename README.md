@@ -277,22 +277,23 @@ curl -fsSL \
 bash davam.sh
 ```
 
-منوی نصب و مدیریت باز می‌شود:
+منوی نصب و مدیریت باز می‌شود. **زبان نصاب انگلیسی است** — مخاطبش مدیر
+سرور است، در حالی که خود سامانه دوزبانه‌ی فارسی/English است:
 
 ```
-════════ دوام — نصب و مدیریت ════════
-  مسیر: /root/pms
-  نسخه: نصب‌نشده        روش نصب: نامشخص
+════════ Davam — install and manage ════════
+  Path   : /root/pms
+  Version: not installed        Install method: unknown
 
-  ── نصب ──
-   1) نصب با داکر  (پیشنهادی)
-   2) نصب مستقیم روی سرور  (بدون داکر)
+  ── Install ──
+   1) Install with Docker  (recommended)
+   2) Install directly on the server  (no Docker)
 
-  ── بروزرسانی ──
-   3) بررسی نسخه‌ی جدید
-   4) بروزرسانی به آخرین نسخه
-   5) بروزرسانی به نسخه‌ی مشخص
-   6) نمایش تغییرات
+  ── Update ──
+   3) Check for a new version
+   4) Update to the latest version
+   5) Update to a specific version
+   6) Show changes
   …
 ```
 
