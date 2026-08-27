@@ -42,6 +42,9 @@ body{
   background:var(--bg); color:var(--text);
   font-family:var(--fa); line-height:1.75;
   -webkit-font-smoothing:antialiased;
+  /* clip و نه hidden — hidden یک ظرف اسکرول می‌سازد و هدر sticky را
+     می‌شکند، ولی clip فقط سرریز افقی را می‌بُرد. */
+  overflow-x:clip;
 }
 html[lang="en"] body{font-family:var(--en); line-height:1.65}
 
@@ -78,8 +81,19 @@ header{
 .icon-btn:hover{color:var(--text);border-color:var(--brand)}
 
 /* ── قهرمان ──────────────────────────────────────────── */
-.hero{padding:72px 0 56px;text-align:center}
-.hero h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:700;line-height:1.15;letter-spacing:-.02em}
+.hero{padding:72px 0 56px;text-align:center;position:relative}
+/* درخشش ملایم پشت عنوان — عمق می‌دهد بدون اینکه متن را کم‌کنتراست کند.
+   عمداً از left/translate فیزیکی استفاده می‌شود نه inset-inline: در RTL
+   جهت translateX برعکس می‌شد و درخشش صفحه را افقی اسکرول‌پذیر می‌کرد. */
+.hero::before{content:"";position:absolute;inset-block-start:-80px;
+  left:50%;transform:translateX(-50%);
+  width:min(760px,92vw);height:360px;pointer-events:none;z-index:-1;
+  background:radial-gradient(closest-side,
+    color-mix(in srgb,var(--brand) 26%,transparent),transparent 72%)}
+.hero h1{font-size:clamp(2.4rem,6.5vw,4rem);font-weight:700;line-height:1.12;
+  letter-spacing:-.02em;
+  background:linear-gradient(135deg,var(--text) 30%,var(--brand));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
 .hero .sub{color:var(--muted);font-size:clamp(1rem,2.4vw,1.2rem);margin-top:14px;
   max-width:640px;margin-inline:auto}
 .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:26px}
@@ -90,10 +104,19 @@ header{
 
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(140px,100%),1fr));
   gap:14px;margin-top:44px}
-.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;
-  padding:20px 16px;box-shadow:var(--shadow)}
-.stat b{display:block;font-size:1.7rem;font-family:var(--en);color:var(--brand);line-height:1.2}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:20px 16px;box-shadow:var(--shadow);transition:transform .18s ease}
+.stat:hover{transform:translateY(-3px)}
+.stat b{display:block;font-size:1.9rem;font-family:var(--en);line-height:1.2;
+  background:linear-gradient(135deg,var(--brand),var(--accent));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
 .stat span{font-size:.8rem;color:var(--muted)}
+
+/* تیتر بخش‌ها با یک خط رنگی کوتاه، تا مرز بخش‌ها در اسکرول گم نشود */
+h2{position:relative;padding-inline-start:14px}
+h2::before{content:"";position:absolute;inset-inline-start:0;top:.18em;bottom:.18em;
+  width:4px;border-radius:4px;
+  background:linear-gradient(var(--brand),var(--accent))}
 
 /* ── بخش‌ها ──────────────────────────────────────────── */
 section{padding:56px 0;border-top:1px solid var(--line)}
@@ -101,13 +124,28 @@ h2{font-size:clamp(1.4rem,3.4vw,1.9rem);font-weight:700;letter-spacing:-.01em;ma
 .lede{color:var(--muted);margin-bottom:28px;max-width:660px}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(268px,100%),1fr));gap:16px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;
-  padding:22px;box-shadow:var(--shadow)}
-.card h3{font-size:1rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:9px}
-.card h3 .ic{font-size:1.15rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
+/* نوار رنگی بالای هر کارت — گروه‌های موضوعی را بی‌نیاز از تیتر جدا می‌کند */
+.card::before{content:"";position:absolute;inset-block-start:0;inset-inline:0;
+  height:3px;background:var(--ac,var(--brand));opacity:.9}
+.card:hover{transform:translateY(-3px);border-color:var(--ac,var(--brand));
+  box-shadow:0 2px 4px rgba(16,24,40,.05),0 14px 34px rgba(16,24,40,.10)}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:8px;display:flex;
+  align-items:flex-start;gap:10px;line-height:1.5}
+.card h3 .ic{font-size:1.3rem;line-height:1.2;flex:none;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.18))}
 .card p{font-size:.88rem;color:var(--muted)}
+.card p b{color:var(--text);font-weight:700}
 .card ul{margin-top:10px;padding-inline-start:18px;font-size:.85rem;color:var(--muted)}
 .card li{margin-bottom:3px}
+
+.accent-a{--ac:#4668E2}   /* نگهداری */
+.accent-b{--ac:#00B0B1}   /* گزارش و شاخص */
+.accent-c{--ac:#F5A524}   /* زنجیره‌ی تأمین */
+.accent-d{--ac:#8B5CF6}   /* اداری */
+.accent-e{--ac:#22C55E}   /* زیرساخت */
 
 table{width:100%;border-collapse:collapse;font-size:.87rem;
   background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
@@ -197,7 +235,7 @@ body > div[lang]:not(.on){display:none}
     <p class="sub">سامانه‌ی یکپارچه‌ی نگهداری و تعمیرات دکل‌های حفاری —
       جایگزین بومیِ یک سامانه‌ی ERP خارجی، در بهره‌برداری روی سه دکل.</p>
     <div class="pills">
-      <span class="pill">v6.32.0</span>
+      <span class="pill">v6.33.0</span>
       <span class="pill grey">FastAPI</span>
       <span class="pill grey">PostgreSQL 16</span>
       <span class="pill grey">React 18</span>
@@ -205,7 +243,7 @@ body > div[lang]:not(.on){display:none}
       <span class="pill grey">فارسی · English</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>۱۲۰</b><span>نسخه‌ی منتشرشده</span></div>
+      <div class="stat"><b>۱۲۱</b><span>نسخه‌ی منتشرشده</span></div>
       <div class="stat"><b>۳۷</b><span>ماژول بک‌اند</span></div>
       <div class="stat"><b>۳۱</b><span>صفحه‌ی کاربری</span></div>
       <div class="stat"><b>۳</b><span>دکل در بهره‌برداری</span></div>
@@ -218,55 +256,116 @@ body > div[lang]:not(.on){display:none}
       یک شرکت حفاری را می‌گرداند — از برنامه‌ی PM و دستور کار تا نامه‌نگاری
       اداری، انبار، تدارکات و امور کارکنان.</p>
     <div class="grid">
-      <div class="card">
-        <h3><span class="ic">🛠</span> نگهداری و تعمیرات</h3>
-        <p>قلب سامانه — همان چیزی که تکنسین و سرپرست نت هر روز با آن کار می‌کنند.</p>
-        <ul>
-          <li>درخت تجهیزات هر دکل، با ایمپورت از اکسل</li>
-          <li>برنامه‌ی PM روزانه/هفتگی/ماهانه بر تقویم شمسی</li>
-          <li>تولید خودکار شبانه‌ی دستور کار</li>
-          <li>قفل «دلیل تأخیر» روی کار عقب‌افتاده</li>
-          <li>خرابی، کار برنامه‌ریزی‌نشده، گزارش روزانه</li>
-        </ul>
+      <div class="card accent-a">
+        <h3><span class="ic">🌳</span> شناسنامه‌ی دقیق ناوگان</h3>
+        <p>تجهیزات در یک سلسله‌مراتب چندسطحی تعریف می‌شوند — از دکل تا
+          کوچک‌ترین قطعه‌ی قابل تعویض — و هر آیتم کد فنی، مدل و سابقه‌ی خودش
+          را دارد. ساختار موجود سازمان به‌صورت انبوه از اکسل وارد می‌شود، پس
+          راه‌اندازی به ورود دستی هزاران رکورد نیاز ندارد.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">📦</span> زنجیره‌ی تأمین</h3>
-        <p>از درخواست کالا تا تحویل و ثبت دارایی.</p>
-        <ul>
-          <li>انبار و موجودی، با اتصال به API انبار سازمان</li>
-          <li>تدارکات، بازرگانی و سفارش خرید</li>
-          <li>تنخواه و اموال</li>
-        </ul>
+      <div class="card accent-a">
+        <h3><span class="ic">📅</span> نگهداری پیشگیرانه‌ی خودکار</h3>
+        <p>دوره‌های روزانه، هفتگی و ماهانه روی <b>تقویم شمسی</b> تعریف
+          می‌شوند و سامانه <b>هر شب خودش</b> دستور کار روز بعد را می‌سازد.
+          برنامه‌ها و چک‌لیست‌هایشان از فایل قابل ایمپورت و ویرایش‌اند.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">✉️</span> اداری و کارکنان</h3>
-        <p>کارهایی که تا دیروز روی کاغذ و ایمیل انجام می‌شد.</p>
-        <ul>
-          <li>نامه‌نگاری با سربرگ، گردش کار و امضا</li>
-          <li>کتابخانه‌ی اسناد و صندوق دریافتی</li>
-          <li>مرخصی، سفر، فیش حقوقی، تیکت</li>
-          <li>موتور تأیید چندمرحله‌ای</li>
-        </ul>
+      <div class="card accent-a">
+        <h3><span class="ic">⛔</span> انضباط تأخیر</h3>
+        <p>کار عقب‌افتاده <b>بدون ثبت دلیل تأخیر بسته نمی‌شود</b>. این تنها
+          چیزی است که نمی‌گذارد گزارش ماهانه به یک صفحه‌ی تماماً سبزِ بی‌معنا
+          تبدیل شود — و همان قابلیتی است که مدیر واقعاً به آن تکیه می‌کند.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">📊</span> مدیریت و گزارش</h3>
-        <p>تصویری که مدیر برای تصمیم‌گیری لازم دارد.</p>
-        <ul>
-          <li>داشبورد عملیاتی و شاخص‌های کلیدی</li>
-          <li>نمودارهای پیشرفت به تفکیک دکل و دپارتمان</li>
-          <li>خروجی اکسل از هر فهرست</li>
-          <li>لاگ ممیزی کامل</li>
-        </ul>
+      <div class="card accent-b">
+        <h3><span class="ic">⚠️</span> مدیریت خرابی و توقف</h3>
+        <p>خرابی با زمان شروع و پایان ثبت می‌شود و <b>مدت توقف خودکار محاسبه
+          می‌گردد</b>. قطعات مصرفی، شرح رفع و اقدام پیشگیرانه نگه داشته
+          می‌شوند — همان داده‌ای که بدون دخالت انسان به شاخص‌های قابلیت
+          اطمینان تبدیل می‌شود.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">🌐</span> دوزبانه و راست‌چین</h3>
-        <p>فارسی راست‌چین و English چپ‌چین، با تعویض آنی — شامل خروجی‌های
-          چاپی و PDF.</p>
+      <div class="card accent-b">
+        <h3><span class="ic">📈</span> شاخص‌های قابلیت اطمینان</h3>
+        <p>MTBF، MTTR و دسترس‌پذیری همراه با ساعت توقف و تعداد تجهیزات درگیر،
+          قابل تفکیک بر اساس دکل، دپارتمان و بازه‌ی زمانی تا یک سال. روند
+          ناوگان روی محدوده‌های رنگی نمایش داده می‌شود تا افت عملکرد
+          <b>قبل از بحرانی شدن</b> دیده شود.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">🔐</span> دسترسی و امنیت</h3>
-        <p>ورود با JWT و bcrypt، دسترسی نقش‌محور، و جداسازی داده بر اساس
-          دکل — هر کاربر فقط داده‌ی دکل خودش را می‌بیند.</p>
+      <div class="card accent-b">
+        <h3><span class="ic">📗</span> خروجی اکسل حرفه‌ای</h3>
+        <p>از هر فهرستی خروجی گرفته می‌شود. خروجی چک‌لیست نگهداری هر دپارتمان
+          را در شیت جداگانه می‌چیند، وضعیت هر آیتم را علامت می‌زند و سررسید و
+          دلیل تأخیر را هم می‌آورد — با بازه‌ی زمانی کاملاً انعطاف‌پذیر.</p>
+      </div>
+      <div class="card accent-c">
+        <h3><span class="ic">🧾</span> درخواست کالای پیشرفته با رهگیری دقیق</h3>
+        <p>هر درخواست از لحظه‌ی ثبت تا تحویل کالا قابل ردیابی است و در هر
+          لحظه معلوم است روی میز چه کسی مانده. گردش تأیید چندمرحله‌ای است و
+          <b>شرط مبلغی</b> دارد: خریدهای کوچک مسیر کوتاه‌تری می‌روند.</p>
+      </div>
+      <div class="card accent-c">
+        <h3><span class="ic">🔎</span> تشخیص گلوگاه خرید</h3>
+        <p>خط خرید به‌صورت مراحل پشت‌سرهم دیده می‌شود و سامانه انگشت می‌گذارد
+          روی جایی که کار واقعاً معطل شده. مدیر لازم نیست دنبال کسی بگردد.</p>
+      </div>
+      <div class="card accent-c">
+        <h3><span class="ic">⚖️</span> کنترل تطبیقی سه‌جانبه</h3>
+        <p>سفارش، رسید انبار و فاکتور با هم مقایسه می‌شوند و مغایرت خودکار
+          علامت می‌خورد؛ تعهد باز پس از تأیید به هزینه‌ی قطعی تبدیل می‌شود.</p>
+      </div>
+      <div class="card accent-c">
+        <h3><span class="ic">🏬</span> انبار با تاریخچه‌ی کامل</h3>
+        <p>موجودی چند انبار، کالای در راه و تاریخچه‌ی گردش هر قلم نگه داشته
+          می‌شود. اقلام تعمیرپذیر و گارانتی‌دار مسیر خودشان را دارند، و مصرف
+          قطعات مستقیم به هزینه‌ی نگهداری همان تجهیز وصل می‌شود. کنترل مالی
+          چندارزی و تنخواه هر دکل هم پشتیبانی می‌شود.</p>
+      </div>
+      <div class="card accent-d">
+        <h3><span class="ic">📜</span> نامه‌نگاری اداری کامل</h3>
+        <p>نامه با سربرگ رسمی ساخته می‌شود، شماره‌ی اتوماتیک می‌گیرد، مسیر
+          تأییدش را طی می‌کند و با امضای اسکن‌شده مهر می‌شود. گیرنده‌ی داخلی و
+          خارج از سازمان، رونوشت، پیوست، درجه‌ی محرمانگی و فوریت پشتیبانی
+          می‌شوند و خروجی نهایی قابل چاپ و بایگانی است.</p>
+      </div>
+      <div class="card accent-d">
+        <h3><span class="ic">⚙️</span> موتور گردش کار مشترک</h3>
+        <p>مرخصی، مأموریت، فیش حقوقی و پشتیبانی داخلی همه روی <b>یک موتور
+          تأیید</b> اجرا می‌شوند که مرحله‌ها را بر اساس نقش، دپارتمان، مدیر
+          مستقیم یا شرط مبلغی تعیین می‌کند، مهلت پاسخ می‌گذارد و مرحله‌های
+          غیرضروری را خودش رد می‌کند.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">🌐</span> دوزبانگی واقعی</h3>
+        <p>فارسی راست‌چین و English چپ‌چین با تعویض آنی — و مهم‌تر: جهت صفحه،
+          تقویم، قالب اعداد و حتی <b>خروجی‌های چاپی و PDF</b> هم با زبان عوض
+          می‌شوند.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">🔐</span> دسترسی چندلایه با جداسازی داده</h3>
+        <p>علاوه بر نقش‌های سازمانی، داده <b>بر اساس دکل ایزوله می‌شود</b>:
+          کاربر هر دکل فقط داده‌ی همان دکل را می‌بیند و مدیر چند دکل، فقط
+          دکل‌های تحت نظر خودش.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">🎨</span> برندپذیری کامل</h3>
+        <p>نام و لوگوی شرکت، رنگ‌های سامانه، صفحه‌ی ورود و سربرگ نامه‌ها همه
+          از داخل پنل تنظیم می‌شوند. سامانه با هویت بصری هر سازمان بالا
+          می‌آید، نه با یک ظاهر ثابت.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">🤖</span> دستیار هوشمند</h3>
+        <p>به زبان طبیعی به سؤال‌هایی مثل «چند دستور کار باز داریم؟» جواب
+          می‌دهد. عمداً <b>فقط می‌خواند</b> — هیچ‌وقت چیزی ثبت یا ارسال
+          نمی‌کند.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">💾</span> بکاپ خودکار و بازیابی</h3>
+        <p>بکاپ شبانه با تعداد نسخه‌ی قابل تنظیم، و بازیابی از داخل پنل بدون
+          نیاز به دسترسی سرور. اعلان چندکاناله هم نمی‌گذارد کار پشت گردش
+          تأیید معطل بماند.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">📱</span> روی موبایل و دسکتاپ</h3>
+        <p>علاوه بر مرورگر، به‌صورت اپلیکیشن روی موبایل نصب می‌شود و نسخه‌ی
+          دسکتاپ مستقل هم دارد.</p>
       </div>
     </div>
   </div></section>
@@ -471,7 +570,7 @@ bash davam.sh changes 6.30.0</pre></div>
     <p class="sub">An integrated maintenance management system for drilling
       rigs — replacing a foreign ERP system, in production across three rigs.</p>
     <div class="pills">
-      <span class="pill">v6.32.0</span>
+      <span class="pill">v6.33.0</span>
       <span class="pill grey">FastAPI</span>
       <span class="pill grey">PostgreSQL 16</span>
       <span class="pill grey">React 18</span>
@@ -479,7 +578,7 @@ bash davam.sh changes 6.30.0</pre></div>
       <span class="pill grey">فارسی · English</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>120</b><span>releases shipped</span></div>
+      <div class="stat"><b>121</b><span>releases shipped</span></div>
       <div class="stat"><b>37</b><span>backend modules</span></div>
       <div class="stat"><b>31</b><span>application screens</span></div>
       <div class="stat"><b>3</b><span>rigs in production</span></div>
@@ -492,55 +591,125 @@ bash davam.sh changes 6.30.0</pre></div>
       cycle of a drilling contractor — from PM schedules and work orders to
       official correspondence, warehouse, procurement and HR.</p>
     <div class="grid">
-      <div class="card">
-        <h3><span class="ic">🛠</span> Maintenance</h3>
-        <p>The core — what technicians and supervisors touch every day.</p>
-        <ul>
-          <li>Per-rig equipment tree, importable from Excel</li>
-          <li>Daily / weekly / monthly PM plans on the Jalali calendar</li>
-          <li>Nightly automatic work-order generation</li>
-          <li>Mandatory delay reason on overdue work</li>
-          <li>Failures, unplanned work, daily reports</li>
-        </ul>
+      <div class="card accent-a">
+        <h3><span class="ic">🌳</span> A precise asset register</h3>
+        <p>Equipment is modelled as a deep hierarchy — from the rig down to
+          the smallest replaceable part — and every item carries its own
+          technical code, model and history. Existing structures are
+          bulk-imported from Excel, so going live does not mean typing in
+          thousands of records by hand.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">📦</span> Supply chain</h3>
-        <p>From material request to delivery and asset registration.</p>
-        <ul>
-          <li>Inventory, with a corporate warehouse API connector</li>
-          <li>Procurement and purchase orders</li>
-          <li>Petty cash and asset register</li>
-        </ul>
+      <div class="card accent-a">
+        <h3><span class="ic">📅</span> Automated preventive maintenance</h3>
+        <p>Daily, weekly and monthly cycles are defined once on the
+          <b>Jalali calendar</b>, and the system <b>generates the next day's
+          work orders every night by itself</b>. Plans and checklists are
+          importable and editable from a file.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">✉️</span> Administration &amp; HR</h3>
-        <p>The work that used to live on paper and in email.</p>
-        <ul>
-          <li>Letters with letterhead, routing and signatures</li>
-          <li>Document library and inbox</li>
-          <li>Leave, travel, payslips, tickets</li>
-          <li>Multi-step approval engine</li>
-        </ul>
+      <div class="card accent-a">
+        <h3><span class="ic">⛔</span> Delay discipline</h3>
+        <p>Overdue work <b>cannot be closed without a recorded delay
+          reason</b>. It is the single control that stops a monthly report
+          from becoming a meaningless wall of green — and the one managers
+          actually rely on.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">📊</span> Management &amp; reporting</h3>
-        <p>The picture a manager needs to decide.</p>
-        <ul>
-          <li>Operational dashboard and KPIs</li>
-          <li>Progress charts by rig and department</li>
-          <li>Excel export from every list</li>
-          <li>Full audit log</li>
-        </ul>
+      <div class="card accent-b">
+        <h3><span class="ic">⚠️</span> Failure and downtime management</h3>
+        <p>Failures are logged with start and end time and <b>downtime is
+          computed automatically</b>. Parts consumed, the fix and the
+          preventive action are retained — exactly the data that becomes
+          reliability indicators with no human transcription.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">🌐</span> Bilingual, RTL-native</h3>
-        <p>Persian right-to-left and English left-to-right, switchable at
-          runtime — including printed and PDF output.</p>
+      <div class="card accent-b">
+        <h3><span class="ic">📈</span> Reliability indicators</h3>
+        <p>MTBF, MTTR and availability alongside downtime hours and assets
+          involved, breakable down by rig, department and period up to a
+          year. Fleet trend is plotted against defined bands so a decline is
+          visible <b>before it becomes critical</b>.</p>
       </div>
-      <div class="card">
-        <h3><span class="ic">🔐</span> Access &amp; security</h3>
-        <p>JWT and bcrypt, role-based access, and per-rig data isolation —
-          each user sees only their own rig's data.</p>
+      <div class="card accent-b">
+        <h3><span class="ic">📗</span> Professional Excel output</h3>
+        <p>Available from any list. The maintenance checklist export lays
+          each department out on its own sheet, marks the status of every
+          line and carries the due date and delay reason — with a fully
+          flexible period.</p>
+      </div>
+      <div class="card accent-c">
+        <h3><span class="ic">🧾</span> Advanced requisition with precise tracking</h3>
+        <p>Every request is traceable from the moment it is raised until the
+          goods arrive, and it is always clear whose desk it sits on. Routing
+          is multi-stage and <b>amount-aware</b>: small purchases take a
+          shorter path.</p>
+      </div>
+      <div class="card accent-c">
+        <h3><span class="ic">🔎</span> Purchasing bottleneck detection</h3>
+        <p>The pipeline is presented as sequential stages that point directly
+          at where work has actually stalled. Management does not have to go
+          hunting for someone.</p>
+      </div>
+      <div class="card accent-c">
+        <h3><span class="ic">⚖️</span> Three-way matching</h3>
+        <p>Order, goods receipt and invoice are reconciled against each other
+          and mismatches are flagged automatically; open commitment converts
+          into confirmed cost once approved.</p>
+      </div>
+      <div class="card accent-c">
+        <h3><span class="ic">🏬</span> Inventory with full movement history</h3>
+        <p>Multi-warehouse stock, goods in transit and a per-item movement
+          ledger. Repairable and warrantied items follow their own path, and
+          parts consumption links straight back to the maintenance cost of
+          the specific asset. Multi-currency control and per-rig petty cash
+          are included.</p>
+      </div>
+      <div class="card accent-d">
+        <h3><span class="ic">📜</span> Full official correspondence</h3>
+        <p>Letters are composed on official letterhead, numbered
+          automatically, routed for approval and stamped with a scanned
+          signature. Internal and external recipients, copies, attachments,
+          confidentiality and urgency are supported, and the output is print-
+          and archive-ready.</p>
+      </div>
+      <div class="card accent-d">
+        <h3><span class="ic">⚙️</span> One shared workflow engine</h3>
+        <p>Leave, travel, payslips and internal support all run on <b>a single
+          approval engine</b> that resolves stages by role, department, direct
+          manager or amount threshold, applies deadlines, and skips
+          unnecessary steps on its own.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">🌐</span> Genuine bilingualism</h3>
+        <p>Persian (RTL) and English (LTR) switch instantly — and crucially
+          the page direction, calendar, number formatting and even
+          <b>printed and PDF output</b> switch with the language.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">🔐</span> Layered access with data isolation</h3>
+        <p>Beyond organisational roles, data is <b>isolated per rig</b>: a
+          rig's users see only that rig's data, and a multi-rig manager sees
+          only the rigs they supervise.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">🎨</span> Complete white-labelling</h3>
+        <p>Company name and logos, system colours, the login screen and
+          letterheads are all set from inside the panel. The system comes up
+          wearing each organisation's identity, not a fixed skin.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">🤖</span> Intelligent assistant</h3>
+        <p>Answers natural-language questions such as “how many work orders
+          are open?”. Deliberately <b>read-only</b> — it never files or sends
+          anything.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">💾</span> Automatic backup and restore</h3>
+        <p>Nightly backups with configurable retention, and restore from
+          inside the panel without server access. Multi-channel notifications
+          keep work from stalling behind an approval.</p>
+      </div>
+      <div class="card accent-e">
+        <h3><span class="ic">📱</span> On mobile and desktop</h3>
+        <p>Beyond the browser it installs as a mobile app, and a standalone
+          desktop build is available.</p>
       </div>
     </div>
   </div></section>

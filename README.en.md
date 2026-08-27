@@ -6,7 +6,7 @@
 
 [فارسی](README.md) · English · [Landing page](https://m0000hamad.github.io/davam-showcase/)
 
-![version](https://img.shields.io/badge/version-6.32.0-4668E2)
+![version](https://img.shields.io/badge/version-6.33.0-4668E2)
 ![stack](https://img.shields.io/badge/FastAPI%20·%20PostgreSQL%2016%20·%20React%2018-informational)
 ![deploy](https://img.shields.io/badge/Docker%20or%20bare--metal-2496ED)
 ![i18n](https://img.shields.io/badge/فارسی%20·%20English-00B0B1)
@@ -23,7 +23,7 @@ drilling rigs. It replaces a foreign ERP system at an active drilling
 contractor.
 
 The system runs in production across three rigs and has grown over
-**120 released versions** from a single login module into a full enterprise
+**121 released versions** from a single login module into a full enterprise
 platform — equipment hierarchy and work orders, official correspondence,
 warehouse, procurement, HR workflows and management reporting.
 
@@ -81,65 +81,135 @@ and can be handed over as a single ZIP or Excel file.
 
 ## What it does
 
-### Maintenance — the core
+### 🛠 Maintenance — the core
 
-| Area | Description |
-|---|---|
-| **Equipment tree** | Up to **six levels** (rig → system → equipment → sub-assembly → part), each with its technical code and model plus child counts. Importable from existing Excel files |
-| **PM schedules** | Daily / weekly / monthly plans on the **Jalali calendar**, with nightly automatic work-order generation |
-| **Work orders** | Full lifecycle with a unique number: issue, execute, inline checklist, close — with a mandatory delay reason on overdue work, and single or bulk duplication |
-| **Failure reports** | Logged with automatic downtime calculation, parts consumed, fix description and preventive action, plus a resolved-failure history |
-| **Unplanned work** | Outside the PM cycle, but inside the same reports |
-| **Daily reports** | Generated from PM tasks per department, frozen when filed, archived in Jalali year/month folders, printable and ZIP output |
+**🌳 A precise asset register.** Equipment is modelled as a deep hierarchy —
+from the rig down to the smallest replaceable part — and every item carries
+its own technical code, model and history. An organisation's existing
+structure is bulk-imported from Excel, so going live does not mean typing in
+thousands of records by hand.
 
-### Reporting and KPIs
+**📅 Preventive maintenance planning on the Jalali calendar.** Daily, weekly
+and monthly cycles are defined once, and the system **generates the next
+day's work orders every night by itself**. Plans and their checklists are
+importable, editable and resettable from a file.
 
-The **KPI report** gives the standard maintenance indicators: **MTBF**,
-**MTTR**, **Availability**, failure count, downtime hours and how many
-assets failed — filterable by rig, department and period up to 12 months.
+**🔧 The complete work-order lifecycle.** Every job gets a unique number, its
+execution checklist opens inline, and each line takes a precise status —
+from "done" through "needs parts" to "escalated to management". Bulk creation
+and duplication are supported for recurring programmes.
 
-Fleet availability trend is drawn against colour thresholds
-(green ≥98% · amber 95–98% · red below 95%), alongside monthly charts for
-failure count and downtime hours.
+**⛔ Delay discipline — the feature that keeps reporting honest.** Overdue
+work **cannot be closed without recording a delay reason**. It is the single
+control that stops a monthly report from becoming a meaningless wall of green.
 
-**Excel export** is available from every list. The PM checklist export puts
-each department on its own sheet, marks items with a tick or N/A, and
-carries the due date and the delay reason. Ranges: today, current week,
-current month, a custom range, all open work, or a full export — all on the
-Jalali calendar.
+**⚠️ Failure and downtime management.** Failures are logged with start and end
+time and **downtime is computed automatically**. Parts consumed, the fix and
+the preventive action are retained — exactly the data that later turns into
+reliability indicators with no human transcription. Unplanned work has its
+own route but lands in the same reports.
 
-### Supply chain
+**📄 A daily report that writes itself.** The report is generated from the
+completed work, split by department, and **frozen the moment it is filed** —
+because a signed report must not rewrite itself when tasks change later.
+Structured monthly archiving and single-file handover are built in.
 
-The purchasing pipeline is shown as **stages**, so it is visible exactly
-where work is stuck: awaiting purchase, awaiting order approval, awaiting
-receipt, awaiting invoice, invoice mismatch.
+### 📊 Reporting and KPIs
 
-Material requests · purchase orders · receipt and inspection · invoice and
-payment · suppliers · import files · stock on hand · goods in transit ·
-stock cardex · item catalogue · repairable parts · warranty · cost ledger ·
-budget · petty cash · FX rates — with a corporate warehouse API connector.
+**📈 Standard reliability indicators.** The system computes **MTBF**,
+**MTTR** and **availability** alongside failure counts, downtime hours and
+the number of assets involved — breakable down by rig, department and period
+up to a full year. None of it is typed in; it all falls out of the day-to-day
+failure logging.
 
-### Administration and HR
+**🚦 Early warning through banded thresholds.** Fleet availability is plotted
+against defined bands, so a decline is visible **before it becomes critical**,
+not after.
 
-Official letters with letterhead, horizontal approval routing and scanned
-signatures · inbox · document library · leave · travel requests · payslips ·
-support tickets · multi-step approval engine with amount-based conditions.
+**📗 Professional Excel output from any list.** The maintenance checklist
+export lays each department out on its own sheet, marks the status of every
+line and carries the due date and delay reason. The period is fully flexible —
+from a single day to a complete export — all on the Jalali calendar.
 
-### Platform
+### 📦 Supply chain — from need to settlement
 
-- **Bilingual** — Persian (RTL) and English (LTR), switchable at runtime,
-  including printed and PDF output
-- **Role-based access** — admin / manager / user, plus **per-rig data
-  isolation**: a rig's users see only that rig's data
-- **My desk and pending decisions** — every user knows exactly what is
-  waiting on them
-- **Branding** — company name and logos set from the panel itself, applied
-  to the login screen, sidebar and letterheads (24 settings across 8 groups)
-- **Nightly automatic backups** via `pg_dump`, with restore from the panel
-- **Notifications** over Telegram, Bale and email
-- **Assistant** for asking about equipment, work orders, failures, stock and
-  letters in natural language — read-only; it never files or sends anything
-- **Desktop shell** (Tauri) alongside the browser client and PWA
+**🧾 Advanced material requisition with precise tracking.** Every request is
+traceable from the moment it is raised until the goods arrive, and at any
+point it is clear whose desk it is sitting on. Approval routing is
+multi-stage and **amount-aware**: small purchases take a shorter path, and
+financial sign-off is only required above a defined ceiling.
+
+**🔎 Bottleneck detection, not just order entry.** The purchasing pipeline is
+presented as sequential stages that point directly at where work has actually
+stalled — awaiting purchase, approval, receipt or invoice. Management does
+not have to go hunting for someone.
+
+**⚖️ Three-way matching.** Order, goods receipt and invoice are reconciled
+against each other and mismatches are flagged automatically; open commitment
+converts into confirmed cost once the amount is approved, and lands in the
+cost ledger.
+
+**🏬 Inventory with a complete movement history.** Multi-warehouse stock,
+goods in transit and a full per-item movement ledger are maintained.
+Repairable and warrantied items follow their own path, and parts consumption
+links straight back to the maintenance cost of the specific asset.
+
+**💱 Financial and budget control** with multi-currency support and
+configurable rates, plus per-rig petty cash. The system also integrates with
+the corporate central warehouse, so data need not be kept in two places.
+
+### ✉️ Administration and HR — the paperwork, without paper
+
+**📜 Full official correspondence.** Letters are composed on the
+organisation's official letterhead, numbered automatically, routed for
+approval and stamped with the signer's scanned signature. Internal and
+external recipients, carbon copies, attachments, confidentiality level and
+urgency are all supported; the inbox tracks read and action status. The final
+output is print- and archive-ready.
+
+**🗂 An organised document archive** with categorisation and search, so
+technical and administrative records live in one defined place instead of in
+people's mailboxes.
+
+**👥 HR processes** — leave, missions and travel, payslips and internal
+support — all run on **one shared workflow engine**. Approval rules are
+defined once and every process obeys them; adding a new process does not mean
+rewriting approval logic.
+
+**⚙️ A configurable approval engine** that resolves stages by role,
+department, direct manager or amount threshold, applies response deadlines,
+and skips unnecessary steps on its own.
+
+### 🧩 Platform and experience
+
+**🌐 Genuine bilingualism, not a surface translation.** Persian (RTL) and
+English (LTR) switch instantly — and crucially the page direction, calendar,
+number formatting and even **printed and PDF output** switch with the language.
+
+**🔐 Layered access with data isolation.** Beyond organisational roles, data
+is **isolated per rig**: a rig's users see only that rig's data, and a
+multi-rig manager sees only the rigs they supervise. Access to each area is
+independently controllable.
+
+**📥 A personal desk and decision queue.** Every user sees at a glance what is
+waiting on them, without hunting through sections.
+
+**🎨 Complete white-labelling.** Company name and logos, system colours, the
+login screen and letterheads are all set from inside the panel. The system
+comes up wearing each organisation's identity rather than a fixed skin.
+
+**💾 Nightly automatic backups with in-panel restore.** Retention depth is
+configurable and restoring needs no server access.
+
+**🔔 Multi-channel notifications** over messaging platforms and email, so work
+does not stall behind an approval.
+
+**🤖 An intelligent assistant** that answers natural-language questions such as
+"how many work orders are open?" or "what is the status of mud pump 1?". It is
+deliberately **read-only** — it never files or sends anything.
+
+**📱 On mobile and desktop.** Beyond the browser it installs as a mobile app,
+and a standalone desktop build is available.
 
 ---
 
