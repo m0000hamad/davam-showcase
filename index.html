@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>دوام — سامانه‌ی نگهداری و تعمیرات دکل‌های حفاری</title>
+<meta name="description" content="دوام — سامانه‌ی یکپارچه‌ی CMMS/PMS نگهداری و تعمیرات دکل‌های حفاری. Davam — integrated maintenance management system for drilling rigs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fb; --surface:#ffffff; --surface-2:#f1f3f9;
+  --text:#12172a; --muted:#5b6478; --line:#e2e6ef;
+  --brand:#4668E2; --brand-soft:#eaeeff; --accent:#00B0B1;
+  --code-bg:#171c2e; --code-text:#c9d4f5;
+  --shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px rgba(16,24,40,.06);
+  --fa:'Vazirmatn',system-ui,sans-serif;
+  --en:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1020; --surface:#141a2e; --surface-2:#1b2238;
+    --text:#e8ecf7; --muted:#98a3bd; --line:#252d47;
+    --brand:#7d95ff; --brand-soft:#1d2647; --accent:#3fd2d3;
+    --code-bg:#080b16; --code-text:#c9d4f5;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1020; --surface:#141a2e; --surface-2:#1b2238;
+  --text:#e8ecf7; --muted:#98a3bd; --line:#252d47;
+  --brand:#7d95ff; --brand-soft:#1d2647; --accent:#3fd2d3;
+  --code-bg:#080b16; --code-text:#c9d4f5;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:var(--fa); line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang="en"] body{font-family:var(--en); line-height:1.65}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* ── نوار بالا ───────────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:20;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.bar{display:flex;align-items:center;gap:16px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem}
+.logo .dot{width:26px;height:26px;border-radius:8px;
+  background:linear-gradient(135deg,var(--brand),var(--accent));flex:none}
+.spacer{flex:1}
+
+.tabs{display:flex;gap:2px;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:10px;padding:3px}
+.tabs button{
+  font:inherit;font-size:.82rem;font-weight:500;
+  padding:5px 14px;border:0;border-radius:7px;cursor:pointer;
+  background:transparent;color:var(--muted);transition:.15s;
+}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.tabs button:hover{color:var(--text)}
+
+.icon-btn{
+  width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+  background:var(--surface);color:var(--muted);cursor:pointer;
+  display:grid;place-items:center;font-size:1rem;transition:.15s
+}
+.icon-btn:hover{color:var(--text);border-color:var(--brand)}
+
+/* ── قهرمان ──────────────────────────────────────────── */
+.hero{padding:72px 0 56px;text-align:center}
+.hero h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:700;line-height:1.15;letter-spacing:-.02em}
+.hero .sub{color:var(--muted);font-size:clamp(1rem,2.4vw,1.2rem);margin-top:14px;
+  max-width:640px;margin-inline:auto}
+.pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:26px}
+.pill{font-size:.76rem;font-family:var(--en);font-weight:500;
+  padding:5px 12px;border-radius:999px;
+  background:var(--brand-soft);color:var(--brand);border:1px solid transparent}
+.pill.grey{background:var(--surface-2);color:var(--muted);border-color:var(--line)}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:14px;margin-top:44px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:20px 16px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:1.7rem;font-family:var(--en);color:var(--brand);line-height:1.2}
+.stat span{font-size:.8rem;color:var(--muted)}
+
+/* ── بخش‌ها ──────────────────────────────────────────── */
+section{padding:56px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(1.4rem,3.4vw,1.9rem);font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+.lede{color:var(--muted);margin-bottom:28px;max-width:660px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:22px;box-shadow:var(--shadow)}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:9px}
+.card h3 .ic{font-size:1.15rem}
+.card p{font-size:.88rem;color:var(--muted)}
+.card ul{margin-top:10px;padding-inline-start:18px;font-size:.85rem;color:var(--muted)}
+.card li{margin-bottom:3px}
+
+table{width:100%;border-collapse:collapse;font-size:.87rem;
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+th,td{padding:11px 14px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--surface-2);font-weight:700;font-size:.82rem}
+tbody tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto;border-radius:14px}
+
+/* ── کد ─────────────────────────────────────────────── */
+/* آیتم‌های grid به‌طور پیش‌فرض min-width:auto دارند، یعنی بلوک کد داخلشان
+   می‌تواند از عرض صفحه بیرون بزند و کل صفحه را افقی اسکرول‌پذیر کند.
+   min-width:0 اجازه می‌دهد آیتم جمع شود و اسکرول داخل خودِ <pre> بماند. */
+.grid > *, .steps > *, .shots > *{min-width:0}
+.code{position:relative;background:var(--code-bg);border-radius:12px;margin:14px 0;max-width:100%}
+.code pre{
+  margin:0;padding:16px 18px;overflow-x:auto;
+  font-family:var(--mono);font-size:.8rem;line-height:1.7;
+  color:var(--code-text);direction:ltr;text-align:left
+}
+.code .cp{
+  position:absolute;top:8px;inset-inline-end:8px;
+  font:inherit;font-size:.7rem;font-family:var(--en);
+  padding:4px 10px;border-radius:7px;cursor:pointer;
+  background:rgba(255,255,255,.08);color:#c9d4f5;border:1px solid rgba(255,255,255,.12)
+}
+.code .cp:hover{background:rgba(255,255,255,.16)}
+.cmt{color:#6b7794}
+
+.steps{counter-reset:s;display:grid;gap:22px;margin-top:8px}
+.step{position:relative;padding-inline-start:44px}
+.step::before{
+  counter-increment:s;content:counter(s);
+  position:absolute;inset-inline-start:0;top:0;
+  width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+  background:var(--brand);color:#fff;font-family:var(--en);font-weight:700;font-size:.85rem
+}
+.step h3{font-size:1rem;font-weight:700;margin-bottom:4px}
+.step p{font-size:.88rem;color:var(--muted)}
+
+.note{background:var(--brand-soft);border:1px solid transparent;
+  border-inline-start:3px solid var(--brand);
+  border-radius:10px;padding:14px 16px;font-size:.86rem;margin:16px 0}
+.note b{color:var(--brand)}
+
+/* ── نماها ──────────────────────────────────────────── */
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.shot{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;box-shadow:var(--shadow)}
+.shot img{display:block;width:100%;height:auto}
+.shot figcaption{padding:11px 15px;font-size:.82rem;color:var(--muted);
+  border-top:1px solid var(--line)}
+
+footer{padding:36px 0;border-top:1px solid var(--line);
+  color:var(--muted);font-size:.82rem;text-align:center}
+
+/* فقط دو بلوک زبان — نه هر عنصری که lang دارد. اگر بی‌قید بنویسیم،
+   خودِ <html lang="fa"> هم مشمول می‌شود و کل صفحه ناپدید می‌شود. */
+body > div[lang]:not(.on){display:none}
+
+@media (max-width:640px){
+  .bar{gap:10px}
+  .logo span{display:none}
+  .hero{padding:48px 0 40px}
+  section{padding:42px 0}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <div class="logo"><span class="dot"></span><span data-fa>دوام</span><span data-en>Davam</span></div>
+    <div class="spacer"></div>
+    <div class="tabs" role="tablist" aria-label="Language">
+      <button role="tab" id="tab-fa" aria-selected="true"  onclick="setLang('fa')">فارسی</button>
+      <button role="tab" id="tab-en" aria-selected="false" onclick="setLang('en')">English</button>
+    </div>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Theme">◐</button>
+  </div>
+</header>
+
+<!-- ══════════════════ فارسی ══════════════════ -->
+<div lang="fa" dir="rtl" class="on">
+
+  <div class="wrap hero">
+    <h1>دوام</h1>
+    <p class="sub">سامانه‌ی یکپارچه‌ی نگهداری و تعمیرات دکل‌های حفاری —
+      جایگزین بومی <b>IFS Applications</b>، در بهره‌برداری روی سه دکل.</p>
+    <div class="pills">
+      <span class="pill">v6.32.0</span>
+      <span class="pill grey">FastAPI</span>
+      <span class="pill grey">PostgreSQL 16</span>
+      <span class="pill grey">React 18</span>
+      <span class="pill grey">Docker / bare-metal</span>
+      <span class="pill grey">فارسی · English</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>۱۲۰</b><span>نسخه‌ی منتشرشده</span></div>
+      <div class="stat"><b>۳۷</b><span>ماژول بک‌اند</span></div>
+      <div class="stat"><b>۳۱</b><span>صفحه‌ی کاربری</span></div>
+      <div class="stat"><b>۳</b><span>دکل در بهره‌برداری</span></div>
+    </div>
+  </div>
+
+  <section id="fa-what"><div class="wrap">
+    <h2>دوام چیست</h2>
+    <p class="lede">یک سامانه‌ی CMMS/PMS تحت وب که کل چرخه‌ی نگهداری و تعمیرات
+      یک شرکت حفاری را می‌گرداند — از برنامه‌ی PM و دستور کار تا نامه‌نگاری
+      اداری، انبار، تدارکات و امور کارکنان.</p>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="ic">🛠</span> نگهداری و تعمیرات</h3>
+        <p>قلب سامانه — همان چیزی که تکنسین و سرپرست نت هر روز با آن کار می‌کنند.</p>
+        <ul>
+          <li>درخت تجهیزات هر دکل، با ایمپورت از اکسل</li>
+          <li>برنامه‌ی PM روزانه/هفتگی/ماهانه بر تقویم شمسی</li>
+          <li>تولید خودکار شبانه‌ی دستور کار</li>
+          <li>قفل «دلیل تأخیر» روی کار عقب‌افتاده</li>
+          <li>خرابی، کار برنامه‌ریزی‌نشده، گزارش روزانه</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic">📦</span> زنجیره‌ی تأمین</h3>
+        <p>از درخواست کالا تا تحویل و ثبت دارایی.</p>
+        <ul>
+          <li>انبار و موجودی، با اتصال به API انبار سازمان</li>
+          <li>تدارکات، بازرگانی و سفارش خرید</li>
+          <li>تنخواه و اموال</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic">✉️</span> اداری و کارکنان</h3>
+        <p>کارهایی که تا دیروز روی کاغذ و ایمیل انجام می‌شد.</p>
+        <ul>
+          <li>نامه‌نگاری با سربرگ، گردش کار و امضا</li>
+          <li>کتابخانه‌ی اسناد و صندوق دریافتی</li>
+          <li>مرخصی، سفر، فیش حقوقی، تیکت</li>
+          <li>موتور تأیید چندمرحله‌ای</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic">📊</span> مدیریت و گزارش</h3>
+        <p>تصویری که مدیر برای تصمیم‌گیری لازم دارد.</p>
+        <ul>
+          <li>داشبورد عملیاتی و شاخص‌های کلیدی</li>
+          <li>نمودارهای پیشرفت به تفکیک دکل و دپارتمان</li>
+          <li>خروجی اکسل از هر فهرست</li>
+          <li>لاگ ممیزی کامل</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic">🌐</span> دوزبانه و راست‌چین</h3>
+        <p>فارسی راست‌چین و English چپ‌چین، با تعویض آنی — شامل خروجی‌های
+          چاپی و PDF.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ic">🔐</span> دسترسی و امنیت</h3>
+        <p>ورود با JWT و bcrypt، دسترسی نقش‌محور، و جداسازی داده بر اساس
+          دکل — هر کاربر فقط داده‌ی دکل خودش را می‌بیند.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="fa-shots" data-shots><div class="wrap">
+    <h2>نماهایی از سامانه</h2>
+    <p class="lede">تصاویر از محیط واقعی برنامه.</p>
+    <div class="shots" data-shots-grid></div>
+  </div></section>
+
+  <section id="fa-arch"><div class="wrap">
+    <h2>معماری</h2>
+    <p class="lede">سه لایه‌ی ساده و قابل جابه‌جایی — بدون وابستگی به سرویس ابری.</p>
+    <div class="code"><pre>                       ┌──────────────┐
+   مرورگر / دسکتاپ ───▶│  nginx (web) │  React 18 · TypeScript · Tailwind
+                       └──────┬───────┘  RTL/LTR · Vazirmatn · تقویم شمسی
+                              │ /api
+                       ┌──────▼───────┐
+                       │  FastAPI     │  ۳۷ ماژول · JWT · RBAC · APScheduler
+                       └──────┬───────┘
+                              │
+                       ┌──────▼───────┐
+                       │ PostgreSQL16 │  pgdata · uploads · backups
+                       └──────────────┘</pre></div>
+  </div></section>
+
+  <section id="fa-req"><div class="wrap">
+    <h2>پیش‌نیازها</h2>
+    <p class="lede">یک سرور اوبونتو و یک توکن دسترسی — همین.</p>
+    <div class="tw"><table>
+      <thead><tr><th>مورد</th><th>حداقل</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td>سیستم‌عامل</td><td>Ubuntu 22.04 / 24.04 (۶۴ بیتی)</td><td>نصاب برای همین دو نسخه آزموده شده</td></tr>
+        <tr><td>پردازنده</td><td>۲ هسته</td><td>ساخت ایمیج سنگین‌ترین مرحله است</td></tr>
+        <tr><td>حافظه</td><td>۴ گیگابایت</td><td>—</td></tr>
+        <tr><td>دیسک</td><td>۲۰ گیگابایت آزاد</td><td>رشد آن به پیوست‌ها و بکاپ‌ها بستگی دارد</td></tr>
+        <tr><td>دسترسی</td><td><code>root</code> یا <code>sudo</code></td><td>—</td></tr>
+        <tr><td>شبکه</td><td>پورت ۸۰۸۰ باز</td><td>برای HTTPS پورت ۸۰ و ۴۴۳</td></tr>
+        <tr><td>اینترنت سرور</td><td>لازم</td><td>برای دریافت بسته و کتابخانه‌ها</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>توکن دسترسی:</b> کد سامانه خصوصی است، پس نصب به یک
+      توکن فقط‌خواندنی نیاز دارد. توکن را از تیم دوام بگیرید.</div>
+  </div></section>
+
+  <section id="fa-install"><div class="wrap">
+    <h2>نصب</h2>
+    <p class="lede">کل نصب از طریق API گیت‌هاب انجام می‌شود — هیچ فایلی دستی
+      آپلود نمی‌شود.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>گرفتن اسکریپت نصب</h3>
+        <p>اسکریپت مستقیم از مخزن خصوصی و با توکن شما دانلود می‌شود.</p>
+        <div class="code">
+          <button class="cp" onclick="cp(this)">کپی</button>
+          <pre>export DAVAM_GH_TOKEN='توکنی-که-گرفته‌اید'
+
+curl -fsSL \
+  -H "Authorization: Bearer $DAVAM_GH_TOKEN" \
+  -H "Accept: application/vnd.github.raw" \
+  https://api.github.com/repos/davam-automation/davam/contents/davam.sh \
+  -o davam.sh</pre>
+        </div>
+      </div>
+      <div class="step">
+        <h3>اجرای منو</h3>
+        <p>منوی نصب و مدیریت باز می‌شود؛ گزینه‌ی ۱ (داکر) یا ۲ (نصب مستقیم).</p>
+        <div class="code">
+          <button class="cp" onclick="cp(this)">کپی</button>
+          <pre>bash davam.sh</pre>
+        </div>
+      </div>
+      <div class="step">
+        <h3>تمام</h3>
+        <p>اسکریپت پیش‌نیازها را نصب می‌کند، آخرین نسخه را می‌گیرد، پسورد
+          دیتابیس و کلید امنیتی را <b>تصادفی</b> می‌سازد، فایروال را تنظیم
+          می‌کند و در پایان آزمون پذیرش می‌گیرد و آدرس و رمز ورود را چاپ می‌کند.</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:40px;font-size:1.15rem">کدام روش نصب؟</h2>
+    <div class="tw"><table>
+      <thead><tr><th></th><th>داکر (پیشنهادی)</th><th>مستقیم روی سرور</th></tr></thead>
+      <tbody>
+        <tr><td>ایزولاسیون</td><td>کامل — سه کانتینر جدا</td><td>روی خود سیستم‌عامل</td></tr>
+        <tr><td>پیش‌نیاز اضافه</td><td>داکر</td><td>PostgreSQL، Python، nginx از apt</td></tr>
+        <tr><td>Node روی سرور</td><td>لازم نیست</td><td>لازم نیست — فرانت از قبل ساخته شده</td></tr>
+        <tr><td>Adminer</td><td>✅</td><td>❌</td></tr>
+        <tr><td>مناسب برای</td><td>اکثر موارد</td><td>سرورهایی که داکر ممنوع است</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="note">نصب بی‌صدا و بدون منو:
+      <code>DAVAM_GH_TOKEN='…' bash davam.sh install-docker</code></div>
+  </div></section>
+
+  <section id="fa-update"><div class="wrap">
+    <h2>بروزرسانی</h2>
+    <p class="lede">در هر سه روش، دیتابیس و پیوست‌ها و <code>.env</code> حفظ
+      می‌شوند و پیش از هر بروزرسانی خودکار بکاپ گرفته می‌شود.</p>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="ic">🖱</span> از داخل خود برنامه</h3>
+        <p><b>تنظیمات ← بروزرسانی سامانه</b>: نسخه‌ی جدید، فهرست تغییرات، و
+          یک دکمه‌ی نصب. یک‌بار روی سرور فعالش کنید:</p>
+        <div class="code"><button class="cp" onclick="cp(this)">کپی</button><pre>bash davam.sh agent-install</pre></div>
+      </div>
+      <div class="card">
+        <h3><span class="ic">📋</span> از منو</h3>
+        <p><code>bash davam.sh</code> و گزینه‌ی ۴ (آخرین نسخه) یا ۵ (نسخه‌ی
+          مشخص). روش نصب خودکار تشخیص داده می‌شود.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ic">⌨️</span> از خط فرمان</h3>
+        <div class="code"><button class="cp" onclick="cp(this)">کپی</button><pre>bash davam.sh check
+bash davam.sh update
+bash davam.sh update 6.31.0
+bash davam.sh changes 6.30.0</pre></div>
+      </div>
+    </div>
+    <div class="note"><b>کانال اختصاصی مشتری:</b> هر نصب می‌تواند کانال خودش
+      را داشته باشد — <code>UPDATE_CHANNEL</code> برای نسخه‌های اختصاصی و
+      <code>UPDATE_PIN</code> به‌عنوان سقف نسخه، برای مشتری‌هایی که باید روی
+      نسخه‌ی تأییدشده بمانند.</div>
+    <div class="note"><b>چرا API خودش سرور را دستکاری نمی‌کند؟</b> بک‌اند فقط
+      یک «درخواست» ثبت می‌کند و عاملی روی خود سرور آن را اجرا می‌کند. اگر API
+      به داکر یا systemd دسترسی داشت، هر رخنه‌ای در API تبدیل به دسترسی root
+      می‌شد.</div>
+  </div></section>
+
+  <section id="fa-sec"><div class="wrap">
+    <h2>امنیت</h2>
+    <div class="grid">
+      <div class="card"><h3>پیکربندی امن از لحظه‌ی صفر</h3>
+        <p>پسورد دیتابیس و کلید امنیتی در هر نصب تصادفی ساخته می‌شوند؛ هیچ
+          مقدار پیش‌فرضی به تولید نمی‌رسد.</p></div>
+      <div class="card"><h3>دسترسی لایه‌به‌لایه</h3>
+        <p>JWT و bcrypt، نقش‌های ادمین/مدیر/کاربر، و جداسازی داده بر اساس
+          دکل. لاگ ممیزی برای عملیات حساس.</p></div>
+      <div class="card"><h3>سطح حمله‌ی کوچک</h3>
+        <p>بک‌اند فقط روی پورت داخلی گوش می‌دهد و ورودی بیرونی از nginx
+          می‌گذرد. توکن مخزن فقط‌خواندنی و محدود به یک مخزن است.</p></div>
+      <div class="card"><h3>HTTPS در یک دستور</h3>
+        <p><code>bash davam.sh ssl example.com</code> — گواهی Let's Encrypt
+          و تمدید خودکار.</p></div>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap">
+    کد سامانه خصوصی است. برای ارزیابی، ممیزی یا همکاری تماس بگیرید.<br>
+    دوام — نرم‌افزار اختصاصی. همه‌ی حقوق محفوظ است.
+  </div></footer>
+</div>
+
+<!-- ══════════════════ English ══════════════════ -->
+<div lang="en" dir="ltr">
+
+  <div class="wrap hero">
+    <h1>Davam</h1>
+    <p class="sub">An integrated maintenance management system for drilling
+      rigs — replacing <b>IFS Applications</b>, in production across three rigs.</p>
+    <div class="pills">
+      <span class="pill">v6.32.0</span>
+      <span class="pill grey">FastAPI</span>
+      <span class="pill grey">PostgreSQL 16</span>
+      <span class="pill grey">React 18</span>
+      <span class="pill grey">Docker / bare-metal</span>
+      <span class="pill grey">فارسی · English</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>120</b><span>releases shipped</span></div>
+      <div class="stat"><b>37</b><span>backend modules</span></div>
+      <div class="stat"><b>31</b><span>application screens</span></div>
+      <div class="stat"><b>3</b><span>rigs in production</span></div>
+    </div>
+  </div>
+
+  <section><div class="wrap">
+    <h2>What Davam is</h2>
+    <p class="lede">A web-based CMMS/PMS that runs the entire maintenance
+      cycle of a drilling contractor — from PM schedules and work orders to
+      official correspondence, warehouse, procurement and HR.</p>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="ic">🛠</span> Maintenance</h3>
+        <p>The core — what technicians and supervisors touch every day.</p>
+        <ul>
+          <li>Per-rig equipment tree, importable from Excel</li>
+          <li>Daily / weekly / monthly PM plans on the Jalali calendar</li>
+          <li>Nightly automatic work-order generation</li>
+          <li>Mandatory delay reason on overdue work</li>
+          <li>Failures, unplanned work, daily reports</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic">📦</span> Supply chain</h3>
+        <p>From material request to delivery and asset registration.</p>
+        <ul>
+          <li>Inventory, with a corporate warehouse API connector</li>
+          <li>Procurement and purchase orders</li>
+          <li>Petty cash and asset register</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic">✉️</span> Administration &amp; HR</h3>
+        <p>The work that used to live on paper and in email.</p>
+        <ul>
+          <li>Letters with letterhead, routing and signatures</li>
+          <li>Document library and inbox</li>
+          <li>Leave, travel, payslips, tickets</li>
+          <li>Multi-step approval engine</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic">📊</span> Management &amp; reporting</h3>
+        <p>The picture a manager needs to decide.</p>
+        <ul>
+          <li>Operational dashboard and KPIs</li>
+          <li>Progress charts by rig and department</li>
+          <li>Excel export from every list</li>
+          <li>Full audit log</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic">🌐</span> Bilingual, RTL-native</h3>
+        <p>Persian right-to-left and English left-to-right, switchable at
+          runtime — including printed and PDF output.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ic">🔐</span> Access &amp; security</h3>
+        <p>JWT and bcrypt, role-based access, and per-rig data isolation —
+          each user sees only their own rig's data.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section data-shots><div class="wrap">
+    <h2>Screens</h2>
+    <p class="lede">Captured from the running application.</p>
+    <div class="shots" data-shots-grid></div>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>Architecture</h2>
+    <p class="lede">Three simple, portable layers — no cloud service dependency.</p>
+    <div class="code"><pre>                        ┌──────────────┐
+   Browser / desktop ──▶│  nginx (web) │  React 18 · TypeScript · Tailwind
+                        └──────┬───────┘  RTL/LTR · Vazirmatn · Jalali dates
+                               │ /api
+                        ┌──────▼───────┐
+                        │  FastAPI     │  37 modules · JWT · RBAC · APScheduler
+                        └──────┬───────┘
+                               │
+                        ┌──────▼───────┐
+                        │ PostgreSQL16 │  pgdata · uploads · backups
+                        └──────────────┘</pre></div>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>Requirements</h2>
+    <p class="lede">One Ubuntu server and an access token — that is all.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Item</th><th>Minimum</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>OS</td><td>Ubuntu 22.04 / 24.04 (64-bit)</td><td>The installer is tested on these two</td></tr>
+        <tr><td>CPU</td><td>2 cores</td><td>Image build is the heaviest step</td></tr>
+        <tr><td>Memory</td><td>4 GB</td><td>—</td></tr>
+        <tr><td>Disk</td><td>20 GB free</td><td>Growth depends on attachments and backups</td></tr>
+        <tr><td>Access</td><td><code>root</code> or <code>sudo</code></td><td>—</td></tr>
+        <tr><td>Network</td><td>Port 8080 open</td><td>Ports 80 and 443 for HTTPS</td></tr>
+        <tr><td>Internet</td><td>Required</td><td>To fetch the package and libraries</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Access token:</b> the source is private, so
+      installation needs a read-only token. Request one from the Davam team.</div>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>Installation</h2>
+    <p class="lede">The whole install runs through the GitHub API — nothing is
+      uploaded by hand.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>Fetch the installer</h3>
+        <p>Downloaded straight from the private repository with your token.</p>
+        <div class="code">
+          <button class="cp" onclick="cp(this)">Copy</button>
+          <pre>export DAVAM_GH_TOKEN='your-token-here'
+
+curl -fsSL \
+  -H "Authorization: Bearer $DAVAM_GH_TOKEN" \
+  -H "Accept: application/vnd.github.raw" \
+  https://api.github.com/repos/davam-automation/davam/contents/davam.sh \
+  -o davam.sh</pre>
+        </div>
+      </div>
+      <div class="step">
+        <h3>Run the menu</h3>
+        <p>Pick option 1 (Docker) or option 2 (bare-metal).</p>
+        <div class="code">
+          <button class="cp" onclick="cp(this)">Copy</button>
+          <pre>bash davam.sh</pre>
+        </div>
+      </div>
+      <div class="step">
+        <h3>Done</h3>
+        <p>The script installs prerequisites, pulls the latest release,
+          generates a <b>random</b> database password and secret key,
+          configures the firewall, runs an acceptance check, and prints the
+          URL and login.</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:40px;font-size:1.15rem">Which method?</h2>
+    <div class="tw"><table>
+      <thead><tr><th></th><th>Docker (recommended)</th><th>Bare-metal</th></tr></thead>
+      <tbody>
+        <tr><td>Isolation</td><td>Full — three separate containers</td><td>Runs on the host OS</td></tr>
+        <tr><td>Extra prerequisite</td><td>Docker</td><td>PostgreSQL, Python, nginx from apt</td></tr>
+        <tr><td>Node on the server</td><td>Not required</td><td>Not required — frontend ships pre-built</td></tr>
+        <tr><td>Adminer</td><td>✅</td><td>❌</td></tr>
+        <tr><td>Best for</td><td>Most cases</td><td>Servers where Docker is not permitted</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="note">Unattended:
+      <code>DAVAM_GH_TOKEN='…' bash davam.sh install-docker</code></div>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>Updating</h2>
+    <p class="lede">In all three routes the database, attachments and
+      <code>.env</code> are preserved, and a backup is taken automatically
+      before every update.</p>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="ic">🖱</span> From inside the app</h3>
+        <p><b>Settings → System update</b>: the new version, its changelog,
+          and one install button. Enable it once on the server:</p>
+        <div class="code"><button class="cp" onclick="cp(this)">Copy</button><pre>bash davam.sh agent-install</pre></div>
+      </div>
+      <div class="card">
+        <h3><span class="ic">📋</span> From the menu</h3>
+        <p><code>bash davam.sh</code>, then option 4 (latest) or 5 (specific
+          version). The install method is detected automatically.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ic">⌨️</span> From the command line</h3>
+        <div class="code"><button class="cp" onclick="cp(this)">Copy</button><pre>bash davam.sh check
+bash davam.sh update
+bash davam.sh update 6.31.0
+bash davam.sh changes 6.30.0</pre></div>
+      </div>
+    </div>
+    <div class="note"><b>Per-customer channels:</b> each installation can
+      follow its own channel — <code>UPDATE_CHANNEL</code> for
+      customer-specific builds and <code>UPDATE_PIN</code> as a version
+      ceiling, for customers who must stay on an approved release.</div>
+    <div class="note"><b>Why the API never touches the server itself:</b> the
+      backend only records a <i>request</i>; an agent on the host carries it
+      out. If the API could reach Docker or systemd, any API compromise would
+      become root access.</div>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>Security</h2>
+    <div class="grid">
+      <div class="card"><h3>Secure from minute zero</h3>
+        <p>The database password and secret key are generated randomly per
+          installation — no default value ever reaches production.</p></div>
+      <div class="card"><h3>Layered access</h3>
+        <p>JWT and bcrypt, admin/manager/user roles, and per-rig data
+          isolation. Audit log for sensitive operations.</p></div>
+      <div class="card"><h3>Small attack surface</h3>
+        <p>The backend listens on an internal port only; external traffic goes
+          through nginx. The repository token is read-only and single-repo.</p></div>
+      <div class="card"><h3>HTTPS in one command</h3>
+        <p><code>bash davam.sh ssl example.com</code> — Let's Encrypt
+          certificate with automatic renewal.</p></div>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap">
+    The source code is private. Get in touch for evaluation, audit or collaboration.<br>
+    Davam — proprietary software. All rights reserved.
+  </div></footer>
+</div>
+
+<script>
+// ── تصاویر: از این آرایه پر می‌شود. خالی باشد، بخش «نماها» پنهان می‌ماند.
+const SHOTS = [
+  // { src:'assets/screenshots/dashboard.png', fa:'داشبورد عملیاتی', en:'Operational dashboard' },
+];
+
+function renderShots(){
+  document.querySelectorAll('[data-shots]').forEach(sec=>{
+    if(!SHOTS.length){ sec.style.display='none'; return; }
+    const lang = sec.closest('[lang]').getAttribute('lang');
+    sec.querySelector('[data-shots-grid]').innerHTML = SHOTS.map(s=>
+      `<figure class="shot"><img src="${s.src}" alt="${s[lang]||''}" loading="lazy">
+       <figcaption>${s[lang]||''}</figcaption></figure>`).join('');
+  });
+}
+
+function setLang(l){
+  document.querySelectorAll('body > div[lang]').forEach(d=>
+    d.classList.toggle('on', d.getAttribute('lang')===l));
+  document.documentElement.lang = l;
+  document.documentElement.dir = (l==='fa') ? 'rtl' : 'ltr';
+  document.getElementById('tab-fa').setAttribute('aria-selected', String(l==='fa'));
+  document.getElementById('tab-en').setAttribute('aria-selected', String(l==='en'));
+  document.querySelectorAll('.logo [data-fa]').forEach(e=>e.style.display = l==='fa'?'':'none');
+  document.querySelectorAll('.logo [data-en]').forEach(e=>e.style.display = l==='en'?'':'none');
+  document.title = l==='fa'
+    ? 'دوام — سامانه‌ی نگهداری و تعمیرات دکل‌های حفاری'
+    : 'Davam — Maintenance Management for Drilling Rigs';
+  try{ localStorage.setItem('davam-lang', l); }catch(e){}
+}
+
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const dark = cur ? cur==='dark'
+    : matchMedia('(prefers-color-scheme: dark)').matches;
+  const next = dark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try{ localStorage.setItem('davam-theme', next); }catch(e){}
+}
+
+function cp(btn){
+  const txt = btn.parentElement.querySelector('pre').innerText;
+  const done = ()=>{ const o=btn.textContent; btn.textContent='✓';
+                     setTimeout(()=>btn.textContent=o, 1200); };
+  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(done, ()=>{}); return; }
+  const ta=document.createElement('textarea'); ta.value=txt;
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); done(); }catch(e){}
+  document.body.removeChild(ta);
+}
+
+(function init(){
+  let lang='fa', theme=null;
+  try{
+    lang  = localStorage.getItem('davam-lang')  || 'fa';
+    theme = localStorage.getItem('davam-theme');
+  }catch(e){}
+  if(theme) document.documentElement.setAttribute('data-theme', theme);
+  renderShots();
+  setLang(lang);
+})();
+</script>
+</body>
+</html>
