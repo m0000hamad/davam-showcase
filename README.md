@@ -4,7 +4,7 @@
 
 **سامانه‌ی یکپارچه‌ی نگهداری و تعمیرات دکل‌های حفاری**
 
-نسخه‌ی فارسی · [English](README.en.md) · [صفحه‌ی معرفی](https://davam-automation.github.io/davam-showcase/)
+نسخه‌ی فارسی · [English](README.en.md) · [صفحه‌ی معرفی](https://m0000hamad.github.io/davam-showcase/)
 
 ![نسخه](https://img.shields.io/badge/نسخه-6.32.0-4668E2)
 ![پشته](https://img.shields.io/badge/FastAPI%20·%20PostgreSQL%2016%20·%20React%2018-informational)
@@ -102,7 +102,7 @@
 |---|---|---|
 | سیستم‌عامل | Ubuntu 22.04 یا 24.04 (۶۴ بیتی) | نصاب برای همین دو نسخه آزموده شده |
 | پردازنده | ۲ هسته | ساخت ایمیج سنگین‌ترین مرحله است |
-| حافظه | ۴ گیگابایت | |
+| حافظه | ۲ گیگابایت | نصب تولیدی فعلی روی همین مقدار اجرا می‌شود |
 | دیسک | ۲۰ گیگابایت آزاد | رشد آن به حجم پیوست‌ها و بکاپ‌ها بستگی دارد |
 | دسترسی | کاربر `root` یا `sudo` | |
 | شبکه | پورت ۸۰۸۰ (یا پورت دلخواه شما) باز | برای HTTPS پورت ۸۰ و ۴۴۳ |
@@ -126,7 +126,7 @@ export DAVAM_GH_TOKEN='توکنی-که-گرفته‌اید'
 curl -fsSL \
   -H "Authorization: Bearer $DAVAM_GH_TOKEN" \
   -H "Accept: application/vnd.github.raw" \
-  https://api.github.com/repos/davam-automation/davam/contents/davam.sh \
+  https://api.github.com/repos/m0000hamad/davam/contents/davam.sh \
   -o davam.sh
 ```
 

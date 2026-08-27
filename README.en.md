@@ -4,7 +4,7 @@
 
 **Integrated Maintenance Management System for Drilling Rigs**
 
-[فارسی](README.md) · English · [Landing page](https://davam-automation.github.io/davam-showcase/)
+[فارسی](README.md) · English · [Landing page](https://m0000hamad.github.io/davam-showcase/)
 
 ![version](https://img.shields.io/badge/version-6.32.0-4668E2)
 ![stack](https://img.shields.io/badge/FastAPI%20·%20PostgreSQL%2016%20·%20React%2018-informational)
@@ -103,7 +103,7 @@ Excel export from every list · full audit log.
 |---|---|---|
 | OS | Ubuntu 22.04 or 24.04 (64-bit) | The installer is tested on these two |
 | CPU | 2 cores | Image build is the heaviest step |
-| Memory | 4 GB | |
+| Memory | 2 GB | The current production install runs on exactly this |
 | Disk | 20 GB free | Growth depends on attachments and backups |
 | Access | `root` or `sudo` | |
 | Network | Port 8080 open (or your chosen port) | Ports 80 and 443 for HTTPS |
@@ -127,7 +127,7 @@ export DAVAM_GH_TOKEN='your-token-here'
 curl -fsSL \
   -H "Authorization: Bearer $DAVAM_GH_TOKEN" \
   -H "Accept: application/vnd.github.raw" \
-  https://api.github.com/repos/davam-automation/davam/contents/davam.sh \
+  https://api.github.com/repos/m0000hamad/davam/contents/davam.sh \
   -o davam.sh
 ```
 
