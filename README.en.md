@@ -19,7 +19,7 @@
 ## What Davam is
 
 Davam is a web-based **CMMS/PMS** built to run maintenance operations for
-drilling rigs. It replaces **IFS Applications** at an active drilling
+drilling rigs. It replaces a foreign ERP system at an active drilling
 contractor.
 
 The system runs in production across three rigs and has grown over
